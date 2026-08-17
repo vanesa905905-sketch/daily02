@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="非工作时段">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="icon.png"><link rel="icon" href="icon.png">
+<title>非工作时段</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --card2:#f1f3f7; --soft:#fbfcfd;
+  --line:#e4e8ef; --line2:#cfd6e0;
+  --tx:#1b2432; --tx2:#5d6b7e; --tx3:#8d99a9;
+  --ac:#d97528; --ac2:#b45f18; --acbg:#fdf3e9;
+  --hi:#2b6cb8; --hibg:#eaf1fa; --ok:#17916a; --okbg:#e7f6f0;
+  --warn:#c4462f; --warnbg:#fbecea; --mid:#b8860b; --midbg:#fdf6e0;
+  --r:14px; --sh:0 1px 2px rgba(20,30,50,.05),0 4px 14px rgba(20,30,50,.05);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-size:15px;line-height:1.65;
+ font-family:-apple-system,BlinkMacSystemFont,"SF Pro SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+ padding-bottom:calc(74px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 16px}
+h1,h2,h3,h4{margin:0;font-weight:660;line-height:1.35}
+a{color:var(--hi);text-decoration:none}
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:none;cursor:pointer}
+header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:12px;padding:13px 0}
+.hd .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(140deg,#eb9a4e,#c9631f);display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;flex:0 0 auto}
+.hd .t{font-size:16px;font-weight:680}
+.hd .d{font-size:12px;color:var(--tx3);margin-top:1px}
+.hd .sp{flex:1}
+.badge{font-size:11px;color:var(--ac2);border:1px solid #f0d9be;background:var(--acbg);padding:4px 10px;border-radius:999px;white-space:nowrap}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.97);backdrop-filter:blur(16px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav .in{display:flex;max-width:1000px;margin:0 auto}
+nav button{flex:1;padding:9px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--tx3)}
+nav button .ic{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+nav button span{font-size:10.5px}
+nav button.on{color:var(--ac)}
+.view{display:none;padding-top:18px;animation:fade .25s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
+.card.tap{cursor:pointer;transition:transform .16s,box-shadow .16s}
+.card.tap:active{transform:scale(.995)}
+.eyebrow{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tx3);font-weight:640;margin-bottom:8px}
+.sec-t{font-size:13px;font-weight:660;color:var(--tx2);margin:24px 0 11px;letter-spacing:.3px;display:flex;align-items:center;gap:9px}
+.sec-t::after{content:"";flex:1;height:1px;background:var(--line)}
+.muted{color:var(--tx2)}.small{font-size:13.5px}.tiny{font-size:12px;color:var(--tx3)}
+.chip{display:inline-block;font-size:11.5px;padding:3px 9px;border-radius:999px;background:var(--card2);color:var(--tx2);border:1px solid var(--line)}
+.chip.ac{color:var(--ac2);border-color:#f0d9be;background:var(--acbg)}
+.chip.ok{color:var(--ok);border-color:#bfe6d6;background:var(--okbg)}
+.chip.hi{color:var(--hi);border-color:#c8dcf3;background:var(--hibg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 16px;border-radius:11px;background:var(--card);border:1px solid var(--line2);font-size:14px;font-weight:560;white-space:nowrap;transition:background .15s}
+.btn svg{width:16px;height:16px;flex:0 0 auto;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn:active{background:var(--card2)}
+.btn.pri{background:linear-gradient(140deg,#e9883b,#cf6a20);color:#fff;border-color:transparent;font-weight:660}
+.btn.full{width:100%}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.scroller{display:flex;gap:8px;overflow-x:auto;padding:2px 16px 10px;margin:0 -16px;scrollbar-width:none}
+.scroller::-webkit-scrollbar{display:none}
+.pill{flex:0 0 auto;padding:7px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-size:13px;color:var(--tx2);white-space:nowrap}
+.pill.on{background:var(--acbg);border-color:#eab98a;color:var(--ac2);font-weight:620}
+.hero{background:linear-gradient(150deg,#fff6ec,#ffffff 70%);border:1px solid #f2e2d0;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:var(--sh)}
+.hero .k{font-size:12px;color:var(--ac2);letter-spacing:1.1px;text-transform:uppercase;font-weight:660}
+.hero h2{font-size:23px;margin:8px 0 6px}
+.hero p{margin:0;color:var(--tx2);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:16px 0 4px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px 6px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:720;color:var(--ac2);line-height:1.2}
+.stat span{font-size:10.5px;color:var(--tx3)}
+/* english */
+.grp{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;background:var(--card)}
+.grp>summary{padding:13px 15px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:9px;font-weight:620;font-size:14px}
+.grp>summary::-webkit-details-marker{display:none}
+.grp>summary::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ac);flex:0 0 auto}
+.grp>summary .n{margin-left:auto;font-size:11px;color:var(--tx3);font-weight:400}
+.words{padding:0 8px 8px}
+.w{display:flex;align-items:center;gap:10px;padding:9px 8px;border-top:1px solid var(--line)}
+.w .en{font-weight:620;font-size:14.5px}.w .zh{font-size:13px;color:var(--tx2);margin-top:1px}
+.w .sp{flex:1;min-width:0}
+.ib{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex:0 0 auto;border:1px solid var(--line);color:var(--tx3)}
+.ib svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ib.star.on{color:var(--ac);border-color:#eab98a;background:var(--acbg)}
+.ib.star.on svg{fill:currentColor}
+.ph{padding:12px 14px;border-top:1px solid var(--line)}
+.ph:first-child{border-top:none}
+.ph .en{font-weight:620;font-size:14.5px}.ph .zh{font-size:13px;color:var(--tx2);margin-top:3px}
+.ph .nt{font-size:12px;color:var(--ac2);margin-top:5px}
+.ph .hd2{display:flex;gap:10px;align-items:flex-start}
+/* study */
+.sc{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 22px;min-height:290px;display:flex;flex-direction:column;justify-content:center;text-align:center;box-shadow:var(--sh);margin-bottom:14px}
+.sc .kind{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:var(--tx3);font-weight:640;margin-bottom:14px}
+.sc .front{font-size:27px;font-weight:700;line-height:1.35;word-break:break-word}
+.sc .front.long{font-size:21px}
+.sc .back{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line2)}
+.sc .back .zh{font-size:19px;font-weight:600}
+.sc .back .nt{font-size:13px;color:var(--ac2);margin-top:8px}
+.grade{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.grade button{padding:14px 6px;border-radius:12px;border:1px solid var(--line2);font-weight:620;font-size:14px;background:var(--card)}
+.grade .no{color:var(--warn);border-color:#eec4bb;background:var(--warnbg)}
+.grade .mid{color:var(--mid);border-color:#ecdca6;background:var(--midbg)}
+.grade .yes{color:var(--ok);border-color:#bfe6d6;background:var(--okbg)}
+.prog{height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:7px}
+.prog i{display:block;height:100%;background:var(--ac);transition:width .3s}
+.bar{display:flex;height:9px;border-radius:99px;overflow:hidden;background:var(--line);margin:10px 0}
+.bar i{display:block;height:100%}
+.opt{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:12px;background:var(--card);border:1px solid var(--line);margin-bottom:9px;font-size:15px}
+.opt.right{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--warn);background:var(--warnbg)}
+.inp{width:100%;padding:13px 14px;border-radius:11px;border:1px solid var(--line2);font-size:16px;background:var(--card);color:var(--tx)}
+/* map */
+#mapWrap{position:relative;background:#eaf0f6;border:1px solid var(--line);border-radius:14px;overflow:hidden;touch-action:none;margin-bottom:10px}
+#map{width:100%;display:block;cursor:grab}
+.mctl{position:absolute;right:9px;bottom:9px;display:flex;flex-direction:column;gap:6px}
+.mctl button{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.94);border:1px solid var(--line2);font-size:18px;font-weight:600;line-height:1;display:grid;place-items:center;box-shadow:var(--sh)}
+.mtip{position:absolute;left:9px;top:9px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:9px;padding:5px 10px;font-size:12.5px;font-weight:600;pointer-events:none;opacity:0;transition:opacity .15s}
+.mtip.on{opacity:1}
+/* country */
+.cflag{font-size:38px;line-height:1}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:9px;margin:14px 0 0}
+.fact{background:var(--card2);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-size:10.5px;color:var(--tx3);text-transform:uppercase;letter-spacing:.7px;font-weight:640;margin-bottom:3px}
+.fact span{font-size:13.5px}
+.ccards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px}
+.ccards.tight{grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:9px}
+.cc{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--sh)}
+.cc .img{height:112px;background:linear-gradient(135deg,#eef2f7,#e3e9f1);display:grid;place-items:center;overflow:hidden}
+.cc .img img{width:100%;height:100%;object-fit:cover;display:block}
+.cc .img .ph2{font-size:11px;color:var(--tx3);letter-spacing:.5px}
+.cc .bd{padding:11px 12px}
+.cc .tp{font-size:10.5px;color:var(--ac2);letter-spacing:.9px;font-weight:660;text-transform:uppercase}
+.cc h4{font-size:14.5px;margin:4px 0 5px}
+.cc p{margin:0;font-size:12.5px;color:var(--tx2);line-height:1.55}
+.tl{position:relative;padding-left:20px}
+.tl::before{content:"";position:absolute;left:5px;top:5px;bottom:5px;width:2px;background:var(--line)}
+.tl .ev{position:relative;margin-bottom:15px}
+.tl .ev::before{content:"";position:absolute;left:-18px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--ac);border:2px solid var(--card)}
+.tl .y{font-size:12px;font-weight:700;color:var(--ac2);letter-spacing:.4px}
+.tl .x{font-size:13.5px;color:var(--tx2);margin-top:2px}
+.adm{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px}
+.adm div{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 10px;background:var(--card2);border-radius:8px}
+.adm div span:last-child{color:var(--tx3);flex:0 0 auto}
+.iss{border-left:3px solid #eec4bb;padding:1px 0 1px 12px;margin-bottom:13px}
+.iss h4{font-size:14.5px}.iss p{margin:3px 0 0;font-size:13.5px;color:var(--tx2)}
+.spot{padding:10px 0;border-top:1px solid var(--line)}
+.spot:first-child{border-top:none}
+.spot b{font-size:14px}.spot p{margin:2px 0 0;font-size:13px;color:var(--tx2)}
+.route{background:var(--hibg);border:1px solid #cfe0f4;border-radius:11px;padding:12px;margin-bottom:9px}
+.route b{font-size:14px;color:var(--hi)}.route p{margin:4px 0 0;font-size:13px;color:var(--tx2)}
+.ri{border-left:3px solid var(--line2);padding:2px 0 2px 13px;margin-bottom:18px}
+.ri h4{font-size:15px;margin-bottom:6px}.ri p{margin:0 0 8px;font-size:13.5px;color:var(--tx2)}
+.take{background:var(--acbg);border:1px solid #f0dcc4;border-radius:10px;padding:10px 12px;font-size:13px;color:var(--ac2);margin-bottom:8px}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--tx2);margin-bottom:14px}
+.empty{text-align:center;padding:38px 20px;color:var(--tx3);font-size:14px}
+.spin{width:26px;height:26px;border:2.5px solid var(--line);border-top-color:var(--ac);border-radius:50%;margin:30px auto;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(min-width:720px){.hd{padding:17px 0}.view{padding-top:24px}.stats{gap:11px}}
+</style>
+</head>
+<body>
+<header><div class="wrap hd">
+  <div class="logo">非</div>
+  <div><div class="t">非工作时段</div><div class="d" id="hdDate"></div></div>
+  <div class="sp"></div><div class="badge" id="hdBadge"></div>
+</div></header>
+<main class="wrap">
+<section class="view on" id="v-today">
+  <div class="hero"><div class="k">今日推送</div><h2 id="tdTitle">—</h2><p id="tdSub">—</p></div>
+  <div class="stats">
+    <div class="stat"><b id="stNew">0</b><span>今日新学</span></div>
+    <div class="stat"><b id="stDue">0</b><span>待复习</span></div>
+    <div class="stat"><b id="stKnown">0</b><span>已掌握</span></div>
+    <div class="stat"><b id="stWeak">0</b><span>薄弱</span></div>
+  </div>
+  <div class="sec-t">今日英语单元</div><div id="tdScene"></div>
+  <div class="sec-t">今日国家</div><div class="card tap" id="tdGeo"></div>
+  <div class="sec-t" id="tdRetailHd">零售速览</div><div id="tdRetail"></div>
+</section>
+<section class="view" id="v-en"><div class="scroller" id="enPills"></div><div id="enBody"></div></section>
+<section class="view" id="v-study"><div id="studyBody"></div></section>
+<section class="view" id="v-geo">
+  <div id="geoList">
+    <div id="mapWrap"><canvas id="map"></canvas>
+      <div class="mtip" id="mtip"></div>
+      <div class="mctl"><button onclick="zoomBy(1.5)">+</button><button onclick="zoomBy(.667)">−</button><button onclick="resetMap()" style="font-size:13px">⟲</button></div>
+    </div>
+    <div class="tiny" style="text-align:center;margin-bottom:12px">拖动平移 · 双指或按钮缩放 · 点击国家查看</div>
+    <div class="row" style="justify-content:center;margin-bottom:14px">
+      <button class="btn" onclick="showCountry(todayCountry().id)">今日国家</button>
+      <button class="btn" onclick="randomCountry()">随机</button>
+    </div>
+    <div class="scroller" id="contPills"></div><div id="geoGrid"></div>
+  </div>
+  <div id="geoDetail" style="display:none"></div>
+</section>
+<section class="view" id="v-retail"><div id="retailBody"></div></section>
+</main>
+<nav><div class="in">
+  <button data-v="today" class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg><span>今日</span></button>
+  <button data-v="en"><svg class="ic" viewBox="0 0 24 24"><path d="M4 5h16M4 5v14M12 5v14"/><path d="M7 9h2M7 13h2M15 9h4M15 13h3"/></svg><span>英语</span></button>
+  <button data-v="geo"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18"/></svg><span>世界</span></button>
+  <button data-v="retail"><svg class="ic" viewBox="0 0 24 24"><path d="M4 8h16l-1 12H5z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span>零售</span></button>
+</div></nav>
+<script>
+/* 英语场景内容库 · 第 1 组 */
+window.EN_SCENES = (window.EN_SCENES || []).concat([
+{
+  id:"supermarket", title:"超市采购", en:"At the Supermarket", tone:"最高频，几乎每周都会用到",
+  intro:"和收银员、理货员、称重台的对话为主。对方多半也不是英语母语者，短句 + 直给最有效。",
+  groups:[
+    {name:"肉类 Meat", items:[
+      ["beef","牛肉"],["minced beef","牛肉馅"],["beef steak","牛排"],["mutton","羊肉（成年羊）"],["lamb","羔羊肉"],
+      ["chicken breast","鸡胸"],["chicken thigh","鸡腿肉"],["drumstick","琵琶腿"],["chicken wings","鸡翅"],
+      ["whole chicken","整鸡"],["turkey","火鸡"],["duck","鸭"],["ribs","排骨"],["bone-in / boneless","带骨 / 去骨"],
+      ["fresh / frozen","鲜的 / 冷冻的"],["halal","清真（阿联酋常见标识）"]
+    ]},
+    {name:"海鲜 Seafood", items:[
+      ["salmon","三文鱼"],["tuna","金枪鱼"],["hammour","石斑鱼（当地最常见）"],["seabream","鲷鱼"],
+      ["prawns / shrimp","大虾 / 虾"],["crab","蟹"],["squid","鱿鱼"],["fillet","鱼柳、去骨鱼片"],
+      ["cleaned","处理干净的"],["scaled and gutted","去鳞去内脏"]
+    ]},
+    {name:"蔬菜 Vegetables", items:[
+      ["potato","土豆"],["sweet potato","红薯"],["onion","洋葱"],["garlic","蒜"],["ginger","姜"],
+      ["tomato","西红柿"],["cucumber","黄瓜"],["carrot","胡萝卜"],["cabbage","卷心菜"],["lettuce","生菜"],
+      ["spinach","菠菜"],["broccoli","西兰花"],["cauliflower","花菜"],["eggplant","茄子"],["zucchini","西葫芦"],
+      ["bell pepper","甜椒"],["chili","辣椒"],["mushroom","蘑菇"],["corn","玉米"],["green beans","四季豆"],
+      ["coriander","香菜"],["spring onion","小葱"],["okra","秋葵（当地很常见）"]
+    ]},
+    {name:"水果 Fruits", items:[
+      ["apple","苹果"],["banana","香蕉"],["orange","橙子"],["mandarin","小橘子"],["grapes","葡萄"],
+      ["watermelon","西瓜"],["melon","甜瓜"],["mango","芒果"],["strawberry","草莓"],["blueberry","蓝莓"],
+      ["pineapple","菠萝"],["kiwi","猕猴桃"],["pear","梨"],["peach","桃"],["lemon","柠檬"],
+      ["dates","椰枣（当地特产）"],["pomegranate","石榴"],["fig","无花果"],["avocado","牛油果"]
+    ]},
+    {name:"主食与干货 Staples", items:[
+      ["rice","米"],["basmati rice","印度香米（当地主流）"],["flour","面粉"],["noodles","面条"],
+      ["instant noodles","方便面"],["pasta","意面"],["bread","面包"],["pita bread","皮塔饼"],
+      ["oats","燕麦"],["cereal","麦片"],["lentils","扁豆"],["chickpeas","鹰嘴豆"],["canned tuna","金枪鱼罐头"]
+    ]},
+    {name:"乳品与蛋 Dairy & Eggs", items:[
+      ["milk","牛奶"],["full fat / low fat / skimmed","全脂 / 低脂 / 脱脂"],["fresh milk","鲜奶"],
+      ["long life milk","常温奶"],["yoghurt","酸奶"],["laban","咸味酸奶饮品（当地特色）"],
+      ["cheese","奶酪"],["cheddar","切达"],["cream cheese","奶油奶酪"],["butter","黄油"],
+      ["cream","奶油"],["eggs","鸡蛋"],["a tray of eggs","一整盘蛋（当地按盘卖）"]
+    ]},
+    {name:"零食 Snacks", items:[
+      ["chips / crisps","薯片"],["biscuits","饼干"],["cookies","曲奇"],["chocolate","巧克力"],
+      ["candy / sweets","糖果"],["gum","口香糖"],["nuts","坚果"],["cashews","腰果"],["almonds","杏仁"],
+      ["pistachios","开心果"],["popcorn","爆米花"],["ice cream","冰淇淋"],["wafer","威化"]
+    ]},
+    {name:"饮料 Drinks", items:[
+      ["water","水"],["sparkling water","气泡水"],["juice","果汁"],["fresh juice","鲜榨果汁"],
+      ["soft drink / soda","汽水"],["energy drink","能量饮料"],["iced tea","冰红茶"],["coffee","咖啡"],
+      ["instant coffee","速溶咖啡"],["tea bags","茶包"],["karak tea","当地奶茶（必尝）"]
+    ]},
+    {name:"调料 Condiments", items:[
+      ["salt","盐"],["sugar","糖"],["pepper","胡椒"],["black pepper","黑胡椒"],["cumin","孜然"],
+      ["turmeric","姜黄"],["curry powder","咖喱粉"],["paprika","红椒粉"],["cinnamon","肉桂"],
+      ["soy sauce","酱油"],["vinegar","醋"],["olive oil","橄榄油"],["sunflower oil","葵花籽油"],
+      ["sesame oil","香油"],["ketchup","番茄酱"],["mayonnaise","蛋黄酱"],["chili sauce","辣椒酱"],
+      ["tahini","芝麻酱（中东常见）"],["stock cube","浓汤宝"]
+    ]},
+    {name:"日用与家清 Household", items:[
+      ["tissue","纸巾"],["toilet paper","卫生纸"],["kitchen towel","厨房纸"],["detergent","洗衣液"],
+      ["fabric softener","柔顺剂"],["dish soap","洗洁精"],["sponge","海绵"],["garbage bags","垃圾袋"],
+      ["cling film","保鲜膜"],["aluminium foil","锡纸"],["batteries","电池"],["shampoo","洗发水"],
+      ["body wash","沐浴露"],["toothpaste","牙膏"],["deodorant","止汗露（当地必备）"]
+    ]},
+    {name:"区域与设施 Areas", items:[
+      ["aisle","货架通道"],["shelf","货架"],["fresh produce section","生鲜区"],["butcher counter","肉档"],
+      ["fish counter","鱼档"],["deli","熟食区"],["bakery","烘焙区"],["frozen section","冷冻区"],
+      ["chiller","冷藏柜"],["freezer","冷冻柜"],["weighing scale","称重台"],["checkout / till","收银台"],
+      ["self-checkout","自助收银"],["counter","柜台"],["trolley","购物车"],["basket","购物篮"],
+      ["customer service","客服台"],["exit / entrance","出口 / 入口"],["storage / back store","仓库"]
+    ]},
+    {name:"操作动作 Actions", items:[
+      ["weigh it","称一下"],["scan","扫码"],["pack / bag it","装袋"],["slice it","切片"],
+      ["cut into pieces","切块"],["mince it","绞碎"],["remove the bones","去骨"],
+      ["clean it","处理干净"],["wrap it","包起来"],["keep it separate","分开装"],
+      ["swipe the card","刷卡"],["tap the card","感应支付"],["scan the QR code","扫二维码"],
+      ["stock it / refill","补货"],["expired","过期"],["expiry date","保质期"],["receipt","小票"],
+      ["refund","退款"],["exchange","换货"],["discount / offer","折扣"],["buy 1 get 1","买一送一"]
+    ]}
+  ],
+  phrases:[
+    ["Excuse me, where can I find rice?","请问米在哪里？","问位置最通用的句式"],
+    ["Which aisle is it in?","在第几个通道？",""],
+    ["Can you show me?","能带我看看吗？","比 Could you kindly direct me 好用得多"],
+    ["Is this the last one?","这是最后一个了吗？",""],
+    ["Do you have more in the back?","库房还有吗？",""],
+    ["When will you get more?","什么时候补货？",""],
+    ["Where do I weigh this?","这个在哪里称？",""],
+    ["Can you weigh this for me?","能帮我称一下吗？",""],
+    ["Half a kilo, please.","半公斤，谢谢。","当地用公斤，说 half kilo 就够"],
+    ["Two kilos of this one.","这个来两公斤。",""],
+    ["Just a little more.","再多一点点。",""],
+    ["That's too much, less please.","太多了，少一点。",""],
+    ["Can you cut it into pieces?","能切块吗？",""],
+    ["Please remove the bones.","请帮我去骨。",""],
+    ["Is this fresh or frozen?","这是鲜的还是冻的？",""],
+    ["What's the expiry date?","保质期到什么时候？",""],
+    ["How much is this?","这个多少钱？",""],
+    ["Is there any offer on this?","这个有活动吗？",""],
+    ["Sorry, I changed my mind. I don't want this.","不好意思我不要这个了。","超市/收银常用"],
+    ["Where is the checkout?","收银台在哪？",""],
+    ["Can I pay by card?","可以刷卡吗？",""],
+    ["Card, please.","刷卡。","实际最常说的就这两个字"],
+    ["Can I have a bag, please?","给我一个袋子好吗？",""],
+    ["Please put the cold items together.","冷藏的请放一起。",""],
+    ["Can I have the receipt?","能给我小票吗？",""],
+    ["I want to return this. Here is the receipt.","我想退这个，这是小票。",""],
+    ["Where is the customer service?","客服台在哪？",""],
+    ["Where is the toilet / restroom?","洗手间在哪？",""],
+    ["How do I get to the exit?","出口怎么走？",""],
+    ["Sorry, I don't need a bag.","不用袋子，谢谢。",""]
+  ]
+},
+{
+  id:"restaurant", title:"餐厅点餐", en:"At the Restaurant", tone:"堂食、外带、结账全流程",
+  intro:"服务生英语水平不一，句子越短越顺。菜单看不懂时直接问 What is this? 最有效。",
+  groups:[
+    {name:"餐厅区域 Places", items:[
+      ["table for two","两人桌"],["indoor / outdoor","室内 / 室外"],["smoking area","吸烟区"],
+      ["family section","家庭区（当地常见）"],["counter","点餐台"],["kitchen","后厨"],
+      ["washroom","洗手间"],["reservation","预订"],["waiting list","排队名单"]
+    ]},
+    {name:"菜品类别 Menu", items:[
+      ["starter / appetizer","前菜"],["main course","主菜"],["side dish","配菜"],["dessert","甜点"],
+      ["soup","汤"],["salad","沙拉"],["grill","烧烤类"],["set meal / combo","套餐"],
+      ["daily special","今日特餐"],["kids meal","儿童餐"],["vegetarian","素食"],["vegan","纯素"]
+    ]},
+    {name:"当地常见菜 Local Dishes", items:[
+      ["shawarma","沙威玛卷"],["hummus","鹰嘴豆泥"],["falafel","炸豆丸子"],["mandi / biryani","手抓饭 / 印度香饭"],
+      ["kebab","烤肉串"],["mixed grill","烤肉拼盘"],["manakish","中东薄饼"],["fattoush","法图什沙拉"],
+      ["tabbouleh","塔布勒沙拉"],["samosa","咖喱角"],["butter chicken","黄油鸡"],["naan","印度烤饼"],
+      ["karak","当地奶茶"],["luqaimat","炸糖球（阿联酋甜点）"]
+    ]},
+    {name:"口味与做法 Taste", items:[
+      ["spicy / not spicy","辣 / 不辣"],["mild","微辣"],["extra spicy","加辣"],["sweet","甜"],
+      ["salty","咸"],["sour","酸"],["grilled","烤的"],["fried","炸的"],["steamed","蒸的"],
+      ["well done","全熟"],["medium","五分熟"],["no onion","不要洋葱"],["no ice","不要冰"],
+      ["less oil","少油"],["less sugar","少糖"],["on the side","单独放旁边"]
+    ]},
+    {name:"餐具与其他 Items", items:[
+      ["fork","叉子"],["spoon","勺子"],["knife","刀"],["chopsticks","筷子"],["napkin / tissue","餐巾纸"],
+      ["straw","吸管"],["plate","盘子"],["bowl","碗"],["glass","杯子"],["menu","菜单"],
+      ["bill / check","账单"],["tip","小费"],["takeaway","打包带走"],["dine in","堂食"],
+      ["delivery","外送"],["service charge","服务费"],["VAT","增值税（阿联酋 5%）"]
+    ]}
+  ],
+  phrases:[
+    ["Table for two, please.","两位，谢谢。",""],
+    ["Do we need to wait?","需要等位吗？",""],
+    ["Can we sit outside?","能坐外面吗？",""],
+    ["Can I see the menu?","能给我菜单吗？",""],
+    ["Do you have an English menu?","有英文菜单吗？",""],
+    ["What is this?","这是什么？","指着菜单问，最实用的一句"],
+    ["What do you recommend?","有什么推荐？",""],
+    ["What is popular here?","这里什么最受欢迎？","比 recommend 更容易被听懂"],
+    ["Is it spicy?","辣吗？",""],
+    ["Not spicy, please.","不要辣，谢谢。",""],
+    ["Is there pork in it?","里面有猪肉吗？",""],
+    ["I'm allergic to nuts.","我对坚果过敏。",""],
+    ["Is this enough for two people?","这个够两个人吃吗？",""],
+    ["One of this, please.","这个来一份。","指着菜单说，万能"],
+    ["Same for me.","我也一样。",""],
+    ["That's all, thank you.","就这些，谢谢。",""],
+    ["Can I have some water?","来点水好吗？",""],
+    ["No ice, please.","不要冰。",""],
+    ["Can you make it less sweet?","能少放点糖吗？",""],
+    ["Sorry, this is not what I ordered.","不好意思，这不是我点的。",""],
+    ["Can you heat it up?","能加热一下吗？",""],
+    ["How long will it take?","还要多久？",""],
+    ["Excuse me, can we get the bill?","买单。",""],
+    ["Bill, please.","买单。","实际最常用"],
+    ["Can I pay by card?","可以刷卡吗？",""],
+    ["Can we split the bill?","能分开付吗？",""],
+    ["Is service charge included?","含服务费了吗？",""],
+    ["Can I have this packed?","这个能打包吗？",""],
+    ["Takeaway, please.","打包带走。",""],
+    ["Keep the change.","不用找了。",""]
+  ]
+},
+{
+  id:"cafe", title:"咖啡与早餐", en:"Coffee & Breakfast", tone:"每天都用的三十秒对话",
+  intro:"星巴克、Tim Hortons、当地咖啡店通用。点单顺序：大小 → 品类 → 冷热 → 堂食还是带走。",
+  groups:[
+    {name:"咖啡品类 Coffee", items:[
+      ["espresso","浓缩"],["americano","美式"],["latte","拿铁"],["cappuccino","卡布奇诺"],
+      ["flat white","馥芮白"],["mocha","摩卡"],["macchiato","玛奇朵"],["cortado","可塔朵"],
+      ["filter coffee","滴滤咖啡"],["Turkish coffee","土耳其咖啡"],["Arabic coffee / gahwa","阿拉伯咖啡"],
+      ["decaf","低因"],["double shot","双份浓缩"],["extra shot","加一份浓缩"]
+    ]},
+    {name:"其他饮品 Other Drinks", items:[
+      ["tea","茶"],["green tea","绿茶"],["mint tea","薄荷茶"],["karak chai","当地奶茶"],
+      ["hot chocolate","热巧克力"],["matcha latte","抹茶拿铁"],["smoothie","冰沙"],
+      ["fresh orange juice","鲜榨橙汁"],["lemon mint","柠檬薄荷汁（当地爆款）"]
+    ]},
+    {name:"规格与定制 Options", items:[
+      ["small / medium / large","小 / 中 / 大"],["hot / iced","热 / 冰"],["to go / takeaway","带走"],
+      ["for here / dine in","堂食"],["full cream milk","全脂奶"],["skimmed milk","脱脂奶"],
+      ["oat milk","燕麦奶"],["almond milk","杏仁奶"],["soy milk","豆奶"],["no sugar","不加糖"],
+      ["one sugar","一包糖"],["less ice","少冰"],["extra hot","要烫一点"],["sleeve","杯套"],["lid","杯盖"]
+    ]},
+    {name:"早餐食物 Breakfast", items:[
+      ["croissant","可颂"],["muffin","马芬"],["sandwich","三明治"],["toast","吐司"],
+      ["scrambled eggs","炒蛋"],["fried egg","煎蛋"],["omelette","蛋饼"],["bacon / turkey bacon","培根 / 火鸡培根"],
+      ["pancake","松饼"],["bagel","贝果"],["donut","甜甜圈"],["cake slice","蛋糕块"],
+      ["labneh","中东浓酸奶"],["zaatar manakish","百里香薄饼"]
+    ]}
+  ],
+  phrases:[
+    ["One large iced latte, please.","一杯大杯冰拿铁。","最标准的点单句式"],
+    ["Medium hot cappuccino, to go.","中杯热卡布，带走。",""],
+    ["Can I get it with oat milk?","能换燕麦奶吗？",""],
+    ["No sugar, please.","不加糖。",""],
+    ["Less ice, please.","少冰。",""],
+    ["Make it extra hot, please.","请做烫一点。",""],
+    ["Is this sweet?","这个甜吗？",""],
+    ["What's in it?","里面有什么？",""],
+    ["Do you have anything without milk?","有不含奶的吗？",""],
+    ["Can I have a cup of water?","能给杯水吗？",""],
+    ["Is the Wi-Fi free? What's the password?","有免费 Wi-Fi 吗？密码是多少？",""],
+    ["Can I sit here?","我可以坐这儿吗？",""],
+    ["Is this seat taken?","这里有人吗？",""],
+    ["Can I get a tray?","能给个托盘吗？",""],
+    ["Can you warm it up, please?","能加热一下吗？",""],
+    ["How long is the wait?","要等多久？",""],
+    ["Name? It's Vanesa. V-A-N-E-S-A.","名字？Vanesa，V-A-N-E-S-A。","拼名字是当地必备技能"],
+    ["Sorry, I ordered iced, not hot.","不好意思，我点的是冰的。",""],
+    ["Can I have a sleeve and a lid?","能给杯套和盖子吗？",""],
+    ["Same as yesterday, please.","跟昨天一样。","常去的店里很好用"]
+  ]
+},
+{
+  id:"taxi", title:"打车与出行", en:"Taxi & Transport", tone:"Careem/Uber/地铁/公交全覆盖",
+  intro:"司机多为南亚裔，用地标沟通比用地址精准得多。记住 landmark 这个词。",
+  groups:[
+    {name:"交通方式 Modes", items:[
+      ["taxi","出租车"],["cab","出租车（口语）"],["ride","一趟车"],["metro","地铁"],
+      ["bus","公交"],["tram","有轨电车"],["abra","水上巴士（迪拜特色）"],["car rental","租车"],
+      ["Nol card","交通卡（迪拜）"],["Salik","过路费系统（迪拜）"],["Darb","过路费系统（阿布扎比）"]
+    ]},
+    {name:"地点与方向 Directions", items:[
+      ["landmark","地标"],["main road","主路"],["side road","辅路"],["roundabout","环岛"],
+      ["exit","出口"],["U-turn","掉头"],["traffic light / signal","红绿灯"],["junction","路口"],
+      ["parking","停车场"],["basement parking","地下车库"],["drop-off point","下客点"],
+      ["pick-up point","上客点"],["gate","门／闸口"],["entrance","入口"],["tower","塔楼"],
+      ["building","楼"],["block","街区"],["straight","直行"],["left / right","左 / 右"],
+      ["ahead","前面"],["behind","后面"],["next to","旁边"],["opposite","对面"],["near","附近"]
+    ]},
+    {name:"车内与费用 In the Car", items:[
+      ["meter","计价器"],["fare","车费"],["toll","过路费"],["change","零钱"],["receipt","收据"],
+      ["seat belt","安全带"],["AC","空调"],["boot / trunk","后备箱"],["luggage","行李"],
+      ["child seat","儿童座椅"],["traffic","堵车"],["shortcut","近路"],["detour","绕路"]
+    ]}
+  ],
+  phrases:[
+    ["Can you take me to Dubai Mall?","去迪拜购物中心。",""],
+    ["Do you know this place?","你知道这个地方吗？",""],
+    ["I'll show you on the map.","我给你看地图。","最省事的一句"],
+    ["It's near the Marina.","在滨海区附近。",""],
+    ["The landmark is the ADNOC petrol station.","地标是 ADNOC 加油站。",""],
+    ["Go straight, then turn left.","直行，然后左转。",""],
+    ["Take the next right.","下一个路口右转。",""],
+    ["Stop here, please.","在这儿停。",""],
+    ["Just after the traffic light.","红绿灯过去一点。",""],
+    ["Can you drop me at the entrance?","能停在门口吗？",""],
+    ["Is the meter on?","打表了吗？",""],
+    ["How much will it be?","大概多少钱？",""],
+    ["Do you take card?","能刷卡吗？",""],
+    ["I only have a 100. Do you have change?","我只有 100，有零钱吗？",""],
+    ["Can I have a receipt?","能给张收据吗？",""],
+    ["Can you turn up the AC?","能把空调开大点吗？",""],
+    ["Can you open the boot?","能开一下后备箱吗？",""],
+    ["Is there a lot of traffic?","堵吗？",""],
+    ["How long will it take?","要多久？",""],
+    ["Please don't take the toll road.","别走收费路。",""],
+    ["Which metro line goes to Deira?","哪条地铁线到德拉？",""],
+    ["Where do I change lines?","在哪换乘？",""],
+    ["How many stops?","几站？",""],
+    ["Does this bus go to the airport?","这车到机场吗？",""],
+    ["Where can I top up my Nol card?","哪里能给交通卡充值？",""],
+    ["I'm waiting at the drop-off area.","我在下客区等。","叫车时发给司机"],
+    ["I'm the one in the blue shirt.","我穿蓝衬衫。",""],
+    ["Please wait two minutes.","请等两分钟。",""],
+    ["Sorry, I'm on my way.","抱歉，我在路上了。",""],
+    ["Can you cancel? I'll book again.","能取消吗？我重新叫。",""]
+  ]
+}
+]);
+
+/* 英语场景内容库 · 第 2 组 */
+window.EN_SCENES = (window.EN_SCENES || []).concat([
+{
+  id:"pharmacy", title:"药店买药", en:"At the Pharmacy", tone:"阿联酋药店密度极高，小病先去药店",
+  intro:"药剂师英语通常不错。描述症状用最朴素的词，不要背医学术语。",
+  groups:[
+    {name:"症状 Symptoms", items:[
+      ["headache","头痛"],["stomach ache","胃痛／肚子痛"],["sore throat","嗓子痛"],["cough","咳嗽"],
+      ["dry cough","干咳"],["runny nose","流鼻涕"],["blocked nose","鼻塞"],["fever","发烧"],
+      ["cold","感冒"],["flu","流感"],["allergy","过敏"],["rash","皮疹"],["itchy","痒"],
+      ["diarrhoea","腹泻"],["constipation","便秘"],["vomiting","呕吐"],["nausea","恶心"],
+      ["back pain","背痛"],["toothache","牙痛"],["burn","烫伤"],["cut","割伤"],["sprain","扭伤"],
+      ["insomnia","失眠"],["heartburn","烧心"],["dizzy","头晕"],["tired","乏力"]
+    ]},
+    {name:"药品与用品 Products", items:[
+      ["painkiller","止痛药"],["paracetamol","扑热息痛（当地最常见）"],["ibuprofen","布洛芬"],
+      ["antibiotic","抗生素"],["antihistamine","抗过敏药"],["cough syrup","止咳糖浆"],
+      ["throat lozenges","润喉糖"],["nasal spray","鼻喷"],["eye drops","眼药水"],
+      ["antacid","抗酸药"],["ointment / cream","药膏"],["plaster / band-aid","创可贴"],
+      ["bandage","绷带"],["antiseptic","消毒液"],["thermometer","体温计"],
+      ["vitamin","维生素"],["supplement","保健品"],["probiotics","益生菌"],
+      ["sunscreen","防晒霜"],["insect repellent","驱蚊液"],["mask","口罩"],["sanitiser","免洗洗手液"]
+    ]},
+    {name:"剂型与用法 Dosage", items:[
+      ["tablet","药片"],["capsule","胶囊"],["syrup","糖浆"],["drops","滴剂"],["spray","喷剂"],
+      ["injection","注射"],["sachet","冲剂小包"],["prescription","处方"],
+      ["over the counter","非处方"],["twice a day","一天两次"],["three times a day","一天三次"],
+      ["after meals","饭后"],["before meals","饭前"],["every six hours","每六小时"],
+      ["side effect","副作用"],["make you sleepy","会犯困"],["expiry date","有效期"]
+    ]}
+  ],
+  phrases:[
+    ["I have a sore throat and a cough.","我嗓子痛还咳嗽。",""],
+    ["It started two days ago.","两天前开始的。",""],
+    ["Do you have something for a headache?","有治头痛的药吗？","万能句式：something for + 症状"],
+    ["Do you have something for a stomach ache?","有治胃痛的药吗？",""],
+    ["What do you recommend?","你推荐什么？",""],
+    ["Do I need a prescription for this?","这个需要处方吗？",""],
+    ["Is this over the counter?","这个不用处方吧？",""],
+    ["How do I take it?","怎么吃？",""],
+    ["How many times a day?","一天吃几次？",""],
+    ["Before or after food?","饭前还是饭后？",""],
+    ["Will it make me sleepy?","会犯困吗？",""],
+    ["Is there a non-drowsy one?","有不犯困的吗？",""],
+    ["Is it safe with my other medicine?","和我在吃的药一起吃安全吗？",""],
+    ["I'm allergic to penicillin.","我对青霉素过敏。",""],
+    ["Do you have a cheaper option?","有便宜点的吗？",""],
+    ["Do you have the generic version?","有仿制药吗？",""],
+    ["Can I get a bigger pack?","有大包装吗？",""],
+    ["Do you deliver?","你们送货吗？",""],
+    ["Can I have a tax invoice for insurance?","能开发票走保险吗？",""],
+    ["Should I see a doctor?","我需要看医生吗？",""]
+  ]
+},
+{
+  id:"clinic", title:"看医生", en:"At the Clinic", tone:"预约、问诊、报销",
+  intro:"阿联酋看诊几乎都需要预约和保险卡。先说清楚三件事：哪里不舒服、多久了、有没有过敏。",
+  groups:[
+    {name:"就诊流程 Process", items:[
+      ["appointment","预约"],["walk-in","不预约直接来"],["reception","前台"],["registration","登记"],
+      ["waiting room","候诊室"],["consultation","问诊"],["GP / general practitioner","全科医生"],
+      ["specialist","专科医生"],["dentist","牙医"],["referral","转诊"],["follow-up","复诊"],
+      ["insurance card","保险卡"],["Emirates ID","阿联酋身份证"],["co-payment","自付部分"],
+      ["claim","理赔"],["medical report","诊断报告"],["sick leave certificate","病假条"]
+    ]},
+    {name:"检查与治疗 Tests", items:[
+      ["blood test","验血"],["urine test","验尿"],["X-ray","X 光"],["ultrasound","超声"],
+      ["MRI","核磁"],["swab","拭子采样"],["vaccination","疫苗"],["injection","打针"],
+      ["blood pressure","血压"],["temperature","体温"],["result","结果"],["report","报告"]
+    ]},
+    {name:"描述身体 Body", items:[
+      ["head","头"],["throat","喉咙"],["chest","胸"],["stomach","胃／腹"],["back","背"],
+      ["neck","脖子"],["shoulder","肩"],["knee","膝盖"],["ankle","脚踝"],["wrist","手腕"],
+      ["skin","皮肤"],["eye","眼睛"],["ear","耳朵"],["tooth","牙"],["gum","牙龈"]
+    ]}
+  ],
+  phrases:[
+    ["I'd like to book an appointment.","我想预约。",""],
+    ["Do you have anything today?","今天有号吗？",""],
+    ["What time is available?","什么时间有空？",""],
+    ["Do you accept walk-ins?","可以不预约直接来吗？",""],
+    ["Do you accept my insurance?","你们收我这个保险吗？",""],
+    ["Here is my Emirates ID and insurance card.","这是我的身份证和保险卡。",""],
+    ["How much is the consultation fee?","问诊费多少？",""],
+    ["I have pain here.","我这里痛。","指着说，最有效"],
+    ["It hurts when I move.","一动就痛。",""],
+    ["It's been three days.","已经三天了。",""],
+    ["It comes and goes.","时好时坏。",""],
+    ["It's getting worse.","越来越严重了。",""],
+    ["I can't sleep because of it.","疼得睡不着。",""],
+    ["I'm not taking any medicine.","我没在吃药。",""],
+    ["I'm allergic to some antibiotics.","我对某些抗生素过敏。",""],
+    ["Do I need a test?","需要做检查吗？",""],
+    ["When will the results be ready?","结果什么时候出？",""],
+    ["Can you send the report by email?","报告能发邮件吗？",""],
+    ["Do I need to come back?","需要复诊吗？",""],
+    ["Can I have a sick leave certificate?","能开病假条吗？",""]
+  ]
+},
+{
+  id:"bank", title:"银行与缴费", en:"Bank & Bills", tone:"开户、转账、账单",
+  intro:"银行柜台英语较正式，但简单说也完全没问题。记住 transfer / statement / IBAN 三个词。",
+  groups:[
+    {name:"账户与卡 Account", items:[
+      ["open an account","开户"],["current account","活期账户"],["savings account","储蓄账户"],
+      ["salary account","工资账户"],["debit card","借记卡"],["credit card","信用卡"],
+      ["PIN","密码"],["IBAN","国际账号（当地转账必备）"],["account number","账号"],
+      ["minimum balance","最低存款要求"],["statement","对账单"],["balance","余额"],
+      ["online banking","网银"],["app","手机银行"],["OTP","短信验证码"]
+    ]},
+    {name:"操作 Transactions", items:[
+      ["deposit","存款"],["withdraw","取款"],["transfer","转账"],["local transfer","本地转账"],
+      ["international transfer","跨境汇款"],["exchange rate","汇率"],["remittance","汇款"],
+      ["fee / charge","手续费"],["installment","分期"],["direct debit","自动扣款"],
+      ["standing order","定期转账"],["block the card","冻结卡"],["replace the card","补卡"],
+      ["dispute a transaction","争议交易"],["refund","退款"]
+    ]},
+    {name:"账单与费用 Bills", items:[
+      ["utility bill","水电账单"],["DEWA / SEWA / ADDC","当地水电公司"],["rent","房租"],
+      ["due date","到期日"],["late fee","滞纳金"],["invoice","发票"],["receipt","收据"],
+      ["subscription","订阅"],["auto-renew","自动续费"],["cancel","取消"]
+    ]}
+  ],
+  phrases:[
+    ["I'd like to open an account.","我想开户。",""],
+    ["What documents do I need?","需要什么材料？",""],
+    ["Is there a minimum balance?","有最低存款要求吗？",""],
+    ["What are the monthly charges?","每月有什么费用？",""],
+    ["I want to transfer money to China.","我想汇款到中国。",""],
+    ["What's the exchange rate today?","今天汇率多少？",""],
+    ["How much is the transfer fee?","汇款手续费多少？",""],
+    ["How long will it take to arrive?","多久能到账？",""],
+    ["Can you check my balance?","能查一下余额吗？",""],
+    ["I need a statement for the last three months.","我要近三个月的对账单。",""],
+    ["Can you send it to my email?","能发到我邮箱吗？",""],
+    ["My card is not working.","我的卡用不了。",""],
+    ["I lost my card. Please block it.","卡丢了，请冻结。",""],
+    ["I didn't make this transaction.","这笔交易不是我做的。",""],
+    ["I want to cancel this subscription.","我想取消这个订阅。",""],
+    ["Is there a charge for this?","这个收费吗？",""],
+    ["Can I pay in installments?","可以分期吗？",""],
+    ["I didn't get the OTP.","我没收到验证码。",""],
+    ["Can you resend it?","能重发吗？",""],
+    ["How long is the waiting time?","要等多久？",""]
+  ]
+},
+{
+  id:"telecom", title:"电话卡与网络", en:"Phone & Internet", tone:"Etisalat / du 营业厅",
+  intro:"办卡、充值、装宽带最常用。SIM、data、package 是三个高频词。",
+  groups:[
+    {name:"套餐与业务 Plans", items:[
+      ["SIM card","手机卡"],["eSIM","电子卡"],["prepaid","预付费"],["postpaid","后付费"],
+      ["plan / package","套餐"],["data","流量"],["GB","流量单位"],["unlimited data","不限量"],
+      ["minutes","通话分钟"],["international minutes","国际通话"],["top up / recharge","充值"],
+      ["balance","余额"],["bill","账单"],["contract","合约"],["monthly fee","月租"],
+      ["activate","激活"],["deactivate","停用"],["upgrade / downgrade","升级 / 降级"],
+      ["number portability","携号转网"],["roaming","漫游"]
+    ]},
+    {name:"网络与设备 Network", items:[
+      ["home internet","家庭宽带"],["router","路由器"],["Wi-Fi password","无线密码"],
+      ["signal","信号"],["no signal","没信号"],["slow","慢"],["speed","网速"],
+      ["installation","上门安装"],["technician","技术员"],["appointment","上门预约"],
+      ["coverage","覆盖"],["outage","断网"],["reset","重启／重置"],["cable","网线"]
+    ]}
+  ],
+  phrases:[
+    ["I want to buy a SIM card.","我想买张手机卡。",""],
+    ["Which plan do you recommend?","推荐哪个套餐？",""],
+    ["How much data do I get?","有多少流量？",""],
+    ["Is there an unlimited plan?","有不限量的吗？",""],
+    ["How much is it per month?","一个月多少钱？",""],
+    ["Is there a contract?","有合约期吗？",""],
+    ["Can I cancel anytime?","随时能取消吗？",""],
+    ["I want to top up 50 dirhams.","我要充 50 迪拉姆。",""],
+    ["How do I check my balance?","怎么查余额？",""],
+    ["I want to keep my number.","我想保留原号码。",""],
+    ["My internet is very slow.","我家网很慢。",""],
+    ["The Wi-Fi is not working.","Wi-Fi 用不了。",""],
+    ["I already restarted the router.","我已经重启路由器了。","能省掉一轮客服流程"],
+    ["Can you send a technician?","能派人上门吗？",""],
+    ["When can he come?","他什么时候能来？",""],
+    ["Can you make it after 6 pm?","能约六点以后吗？",""],
+    ["Do you cover my area?","我那边有覆盖吗？",""],
+    ["My bill is higher than usual. Why?","账单比平时高，为什么？",""],
+    ["I want to cancel this service.","我想取消这个服务。",""],
+    ["Can I get this in writing / by email?","能发我邮件确认吗？",""]
+  ]
+}
+]);
+
+/* 英语场景内容库 · 第 3 组 */
+window.EN_SCENES = (window.EN_SCENES || []).concat([
+{
+  id:"salon", title:"理发与美容", en:"Salon & Beauty", tone:"讲不清就出事的高风险场景",
+  intro:"最容易翻车的场景。核心技巧：用手比长度 + 说数字（inch / cm），别用形容词。",
+  groups:[
+    {name:"服务项目 Services", items:[
+      ["haircut","剪发"],["trim","修一下"],["blow dry","吹干造型"],["wash and blow dry","洗剪吹"],
+      ["hair colour","染发"],["highlights","挑染"],["roots touch-up","补根"],["treatment","护理"],
+      ["keratin treatment","角蛋白护理"],["manicure","修手"],["pedicure","修脚"],
+      ["gel polish","甲油胶"],["nail extension","接甲"],["facial","面部护理"],
+      ["threading","线面除毛（当地常见）"],["waxing","蜡脱"],["massage","按摩"],["eyebrows","修眉"]
+    ]},
+    {name:"长度与描述 Length", items:[
+      ["short","短"],["shoulder length","及肩"],["one inch","一英寸（约2.5cm）"],["two inches","两英寸"],
+      ["just the ends","只修发尾"],["split ends","分叉"],["layers","层次"],["fringe / bangs","刘海"],
+      ["side part","侧分"],["straight","直发"],["curly","卷发"],["volume","蓬松度"],
+      ["thin it out","打薄"],["same length","保持长度"],["a little bit","一点点"],["not too short","别太短"]
+    ]},
+    {name:"颜色与产品 Colour", items:[
+      ["black","黑"],["dark brown","深棕"],["light brown","浅棕"],["ash","灰调"],["warm tone","暖调"],
+      ["cool tone","冷调"],["natural","自然色"],["shampoo","洗发水"],["conditioner","护发素"],
+      ["serum","精华"],["hair oil","发油"],["hairspray","定型喷雾"],["shade card","色卡"]
+    ]},
+    {name:"预约与费用 Booking", items:[
+      ["appointment","预约"],["walk-in","不预约"],["stylist","发型师"],["ladies salon","女士美发店"],
+      ["price list","价目表"],["package / deal","套餐"],["membership","会员"],["tip","小费"]
+    ]}
+  ],
+  phrases:[
+    ["Just a trim, please.","修一下就好。","最安全的开场"],
+    ["Only the ends, about two centimetres.","只剪发尾，大概两厘米。",""],
+    ["This much.","这么多。","用手比划，配这句最有效"],
+    ["Please don't cut it short.","请别剪太短。",""],
+    ["Keep the length, just remove the split ends.","保持长度，只去分叉。",""],
+    ["No layers, please.","不要打层次。",""],
+    ["Can I see a picture first?","能先看看图片吗？",""],
+    ["I want it like this.","我想要这样的。","给手机照片，最靠谱"],
+    ["Is this possible with my hair?","我的发质能做成这样吗？",""],
+    ["How long will it take?","要多久？",""],
+    ["How much is it in total?","一共多少钱？",""],
+    ["Is the wash included?","含洗头吗？",""],
+    ["Do you have a price list?","有价目表吗？",""],
+    ["Please stop here, that's enough.","到这就行了。","中途叫停用这句"],
+    ["A little shorter on this side.","这边再短一点。",""],
+    ["Not too much product, please.","别抹太多产品。",""],
+    ["The water is too hot.","水太烫了。",""],
+    ["Can you do it a bit lighter?","能轻一点吗？","按摩／洗头时"],
+    ["I'd like to book for Saturday afternoon.","我想约周六下午。",""],
+    ["Do you take walk-ins today?","今天能不预约直接来吗？",""]
+  ]
+},
+{
+  id:"delivery", title:"快递与收货", en:"Delivery & Courier", tone:"电话沟通为主，句子越短越好",
+  intro:"快递员通常只说几十个英语单词。地址讲不清就发定位，说 I'll send you the location。",
+  groups:[
+    {name:"快递相关 Courier", items:[
+      ["delivery","送货"],["courier","快递员"],["parcel / package","包裹"],["tracking number","单号"],
+      ["shipment","货件"],["pick up","取件"],["drop off","寄件"],["return","退货"],
+      ["cash on delivery / COD","货到付款"],["prepaid","已付款"],["signature","签收"],
+      ["OTP","收货验证码"],["reschedule","改期"],["out for delivery","派送中"],
+      ["delayed","延迟"],["lost","丢件"],["damaged","破损"],["customs","海关"],["duty","关税"]
+    ]},
+    {name:"地址表达 Address", items:[
+      ["building name","楼名"],["flat / apartment number","房号"],["floor","楼层"],
+      ["ground floor","一层"],["reception","前台"],["security","保安"],["gate","门口"],
+      ["lobby","大堂"],["lift / elevator","电梯"],["landmark","地标"],["nearby","附近"],
+      ["location pin","定位"],["area","区域"],["street","街道"]
+    ]}
+  ],
+  phrases:[
+    ["I'll send you the location on WhatsApp.","我把定位发你微信/WhatsApp。","当地万能解法"],
+    ["The building name is Al Noor Tower.","楼名是 Al Noor Tower。",""],
+    ["Flat 1203, twelfth floor.","1203 室，12 楼。",""],
+    ["It's opposite the ADNOC station.","在 ADNOC 加油站对面。",""],
+    ["Please leave it at reception.","放前台就行。",""],
+    ["Please give it to security.","交给保安。",""],
+    ["Please leave it at the door.","放门口。",""],
+    ["I'm not at home now.","我现在不在家。",""],
+    ["Can you come after 6 pm?","能六点以后来吗？",""],
+    ["Can you deliver tomorrow instead?","能改到明天吗？",""],
+    ["How long will you take?","你还要多久？",""],
+    ["I'm coming down, two minutes.","我下来了，两分钟。",""],
+    ["Please call me when you arrive.","到了给我打电话。",""],
+    ["Is it cash on delivery?","是货到付款吗？",""],
+    ["How much do I need to pay?","要付多少？",""],
+    ["Do you have change for 100?","100 有零钱找吗？",""],
+    ["Can I pay by card?","能刷卡吗？",""],
+    ["The box is damaged. I want to check it first.","箱子破了，我要先检查。",""],
+    ["I want to return this. What's the process?","我要退货，怎么弄？",""],
+    ["I want to send this to Abu Dhabi. How much?","我要寄到阿布扎比，多少钱？",""],
+    ["When will it arrive?","什么时候到？",""],
+    ["Can you check the tracking number for me?","能帮我查一下单号吗？",""]
+  ]
+},
+{
+  id:"housing", title:"租房与报修", en:"Housing & Maintenance", tone:"看房、签约、坏东西了怎么说",
+  intro:"报修最实用的句式是 The ... is not working。修不好就说 It's still not fixed。",
+  groups:[
+    {name:"房屋类型 Property", items:[
+      ["studio","开间"],["one bedroom","一居"],["two bedroom","两居"],["villa","别墅"],
+      ["apartment / flat","公寓"],["furnished","带家具"],["unfurnished","毛坯／无家具"],
+      ["balcony","阳台"],["parking space","车位"],["shared","合租"],["landlord","房东"],
+      ["agent","中介"],["tenant","租客"],["contract","合同"],["deposit","押金"],
+      ["security deposit","保证金"],["agency fee","中介费"],["cheques","支票（当地付租方式）"],
+      ["chiller free","含冷气费"],["Ejari","租约登记（迪拜）"],["notice period","退租通知期"]
+    ]},
+    {name:"设施 Facilities", items:[
+      ["AC / air conditioning","空调"],["water heater","热水器"],["sink","水槽"],["tap","水龙头"],
+      ["drain","下水"],["toilet","马桶"],["shower","淋浴"],["socket","插座"],["switch","开关"],
+      ["fuse","保险丝"],["light bulb","灯泡"],["door lock","门锁"],["window","窗"],
+      ["washing machine","洗衣机"],["fridge","冰箱"],["oven","烤箱"],["stove","灶台"],
+      ["extractor / hood","抽油烟机"],["lift","电梯"],["gym","健身房"],["pool","泳池"],
+      ["maintenance","维修"],["cleaning","保洁"],["pest control","除虫"]
+    ]},
+    {name:"问题描述 Problems", items:[
+      ["not working","坏了／不工作"],["leaking","漏水"],["blocked","堵了"],["broken","破了"],
+      ["noisy","有噪音"],["smell","有味道"],["no hot water","没热水"],["not cooling","不制冷"],
+      ["power cut","停电"],["flickering","闪烁"],["loose","松了"],["stuck","卡住了"]
+    ]}
+  ],
+  phrases:[
+    ["I'm looking for a one bedroom apartment.","我想找一居室。",""],
+    ["What's the yearly rent?","年租多少？",""],
+    ["How many cheques?","分几次付？","当地租金按支票期数算"],
+    ["Is DEWA included?","含水电吗？",""],
+    ["Is it chiller free?","含冷气费吗？",""],
+    ["Is parking included?","含车位吗？",""],
+    ["Can I see it today?","今天能看房吗？",""],
+    ["Is it available now?","现在能入住吗？",""],
+    ["Can we negotiate the price?","价格能谈吗？",""],
+    ["What's the agency fee?","中介费多少？",""],
+    ["When do I get the deposit back?","押金什么时候退？",""],
+    ["The AC is not working.","空调坏了。",""],
+    ["There's no hot water.","没有热水。",""],
+    ["The sink is blocked.","水槽堵了。",""],
+    ["The tap is leaking.","水龙头漏水。",""],
+    ["The light bulb needs replacing.","灯泡要换。",""],
+    ["Can you send someone today?","今天能派人来吗？",""],
+    ["What time will he come?","几点来？",""],
+    ["It's still not fixed.","还是没修好。","催修神句"],
+    ["This is the third time I'm reporting it.","这已经是第三次报修了。",""],
+    ["Please give me a reference number.","请给我一个工单号。",""],
+    ["I want to renew the contract.","我想续约。",""],
+    ["I'm giving my notice.","我要退租。",""]
+  ]
+},
+{
+  id:"clothes", title:"服装购物与退换", en:"Shopping for Clothes", tone:"试衣、尺码、退换",
+  intro:"尺码在当地混用 UK / EU / US 三套体系，直接说 Do you have this in medium? 最安全。",
+  groups:[
+    {name:"品类 Items", items:[
+      ["shirt","衬衫"],["t-shirt","T恤"],["blouse","女式衬衫"],["dress","连衣裙"],["skirt","裙子"],
+      ["trousers / pants","长裤"],["jeans","牛仔裤"],["shorts","短裤"],["jacket","夹克"],
+      ["coat","外套"],["hoodie","连帽衫"],["abaya","阿拉伯长袍"],["scarf","围巾"],
+      ["shoes","鞋"],["sneakers","运动鞋"],["sandals","凉鞋"],["heels","高跟鞋"],
+      ["bag","包"],["belt","腰带"],["socks","袜子"],["underwear","内衣"],["swimsuit","泳衣"]
+    ]},
+    {name:"尺码与版型 Fit", items:[
+      ["size","尺码"],["small / medium / large","S / M / L"],["extra large","XL"],
+      ["UK size","英码"],["EU size","欧码"],["one size","均码"],["tight","紧"],["loose","松"],
+      ["too big / too small","太大 / 太小"],["too long / too short","太长 / 太短"],
+      ["fits well","很合身"],["oversized","宽松版"],["slim fit","修身"],["stretchy","有弹性"]
+    ]},
+    {name:"材质与颜色 Material", items:[
+      ["cotton","棉"],["linen","亚麻"],["polyester","涤纶"],["wool","羊毛"],["silk","丝"],
+      ["denim","牛仔布"],["leather","皮"],["breathable","透气"],["washable","可水洗"],
+      ["dry clean only","只能干洗"],["black","黑"],["white","白"],["beige","米色"],
+      ["navy","藏青"],["grey","灰"],["light / dark","浅 / 深"]
+    ]},
+    {name:"购物流程 Process", items:[
+      ["fitting room","试衣间"],["mirror","镜子"],["sale","打折"],["clearance","清仓"],
+      ["50% off","五折"],["new arrival","新品"],["out of stock","缺货"],["in stock","有货"],
+      ["other branch","别的门店"],["reserve","预留"],["exchange","换货"],["refund","退款"],
+      ["store credit","store credit（购物额度）"],["warranty","保修"],["tag","吊牌"],["receipt","小票"]
+    ]}
+  ],
+  phrases:[
+    ["Do you have this in medium?","这个有 M 码吗？",""],
+    ["Do you have this in another colour?","有别的颜色吗？",""],
+    ["Do you have a bigger size?","有大一号的吗？",""],
+    ["Can I try it on?","能试穿吗？",""],
+    ["Where is the fitting room?","试衣间在哪？",""],
+    ["It's a bit tight.","有点紧。",""],
+    ["It's too long for me.","对我来说太长了。",""],
+    ["I'll take this one.","就要这件。",""],
+    ["I'll think about it, thank you.","我再想想，谢谢。","礼貌脱身"],
+    ["Is this on sale?","这个打折吗？",""],
+    ["What's the final price?","最终多少钱？",""],
+    ["Is the discount already applied?","折扣已经算进去了吗？",""],
+    ["Do you have it in another branch?","别的店有吗？",""],
+    ["Can you check the stock?","能查一下库存吗？",""],
+    ["Can you hold it for me?","能帮我留一下吗？",""],
+    ["What's your return policy?","退换政策是什么？",""],
+    ["How many days do I have to return it?","几天内可以退？",""],
+    ["I want to exchange this for a bigger size.","我想换大一号。",""],
+    ["I want a refund, not store credit.","我要退款，不要购物额度。","当地常被推 credit，这句很关键"],
+    ["The tag is still on and I have the receipt.","吊牌还在，小票也有。",""]
+  ]
+}
+]);
+
+/* 英语场景内容库 · 第 4 组 */
+window.EN_SCENES = (window.EN_SCENES || []).concat([
+{
+  id:"gym", title:"健身房与运动", en:"Gym & Fitness", tone:"办卡、器械、教练课",
+  intro:"器械名和身体部位是核心词汇，其余靠 Can I use this? / Are you using this? 就够了。",
+  groups:[
+    {name:"会籍 Membership", items:[
+      ["membership","会籍"],["monthly / yearly","月卡 / 年卡"],["day pass","日票"],
+      ["free trial","免费体验"],["joining fee","入会费"],["freeze / hold","冻结"],
+      ["cancel","取消"],["locker","储物柜"],["changing room","更衣室"],["shower","淋浴"],
+      ["towel","毛巾"],["induction","入门指导"],["personal trainer / PT","私教"],
+      ["class","团课"],["schedule","课表"],["book a class","约课"],["peak hours","高峰时段"]
+    ]},
+    {name:"器械 Equipment", items:[
+      ["treadmill","跑步机"],["cross trainer","椭圆机"],["exercise bike","动感单车"],
+      ["rowing machine","划船机"],["dumbbells","哑铃"],["barbell","杠铃"],["weight plates","杠铃片"],
+      ["bench","卧推凳"],["squat rack","深蹲架"],["cable machine","龙门架"],["leg press","腿推"],
+      ["lat pulldown","高位下拉"],["mat","垫子"],["resistance band","弹力带"],["kettlebell","壶铃"]
+    ]},
+    {name:"动作与身体 Training", items:[
+      ["warm up","热身"],["cool down","放松"],["stretch","拉伸"],["set","组"],["reps","次数"],
+      ["cardio","有氧"],["weights","力量训练"],["core","核心"],["upper body","上肢"],
+      ["lower body","下肢"],["legs","腿"],["arms","手臂"],["shoulders","肩"],["chest","胸"],
+      ["back","背"],["abs","腹肌"],["sore","酸痛"],["injury","受伤"],["form","动作姿势"]
+    ]}
+  ],
+  phrases:[
+    ["How much is the monthly membership?","月卡多少钱？",""],
+    ["Is there a joining fee?","有入会费吗？",""],
+    ["Can I try it once first?","能先体验一次吗？",""],
+    ["Can I cancel anytime?","随时可以取消吗？",""],
+    ["Can I freeze my membership?","能冻结会籍吗？",""],
+    ["Are you using this?","这个你在用吗？","健身房最高频的一句"],
+    ["Can I work in with you?","能和你轮着用吗？",""],
+    ["How many sets do you have left?","你还有几组？",""],
+    ["Can you spot me?","能帮我保护一下吗？",""],
+    ["Can you show me how to use this?","能教我怎么用吗？",""],
+    ["Am I doing this right?","我动作对吗？",""],
+    ["Where are the mats?","垫子在哪？",""],
+    ["Is this class for beginners?","这个课适合新手吗？",""],
+    ["Do I need to book in advance?","需要提前约吗？",""],
+    ["When is it less busy?","什么时候人少？",""],
+    ["How much is a personal trainer?","私教多少钱？",""],
+    ["I have a bad knee.","我膝盖不太好。",""],
+    ["Can we go lighter today?","今天能轻一点吗？",""],
+    ["Do you have lockers?","有储物柜吗？",""],
+    ["Do I need my own towel?","要自带毛巾吗？",""]
+  ]
+},
+{
+  id:"car", title:"加油与汽车", en:"Petrol & Car", tone:"加油、洗车、保养、违章",
+  intro:"阿联酋加油站有人服务，不用自己动手。说 Special 95, full tank, card 就完事了。",
+  groups:[
+    {name:"加油站 Petrol Station", items:[
+      ["petrol / fuel","汽油"],["Special 95","95号（当地叫法）"],["Super 98","98号"],
+      ["E-Plus 91","91号"],["diesel","柴油"],["full tank","加满"],["100 dirhams","加100迪拉姆"],
+      ["pump","油枪／加油机"],["attendant","加油员"],["car wash","洗车"],["air pressure","胎压"],
+      ["windscreen","挡风玻璃"],["engine oil","机油"],["water","水箱水"],["shop","便利店"]
+    ]},
+    {name:"车辆与保养 Car & Service", items:[
+      ["service","保养"],["oil change","换机油"],["filter","滤芯"],["tyre","轮胎"],
+      ["puncture","扎胎"],["spare tyre","备胎"],["brake","刹车"],["battery","电瓶"],
+      ["jump start","搭电"],["AC not cooling","空调不制冷"],["strange noise","异响"],
+      ["check engine light","故障灯"],["towing","拖车"],["garage / workshop","修车厂"],
+      ["spare parts","配件"],["quotation","报价"],["registration / Mulkiya","行驶证"],
+      ["insurance","保险"],["annual test","年检"]
+    ]},
+    {name:"停车与违章 Parking", items:[
+      ["parking","停车"],["paid parking","收费停车"],["parking meter","停车缴费机"],
+      ["free parking","免费停车"],["valet","代客泊车"],["fine / ticket","罚单"],
+      ["speeding","超速"],["radar","测速"],["black points","扣分"],["accident","事故"],
+      ["police report","事故报告"],["towed","被拖走"]
+    ]}
+  ],
+  phrases:[
+    ["Special 95, full tank please.","95号加满。","当地标准说法"],
+    ["100 dirhams of 95, please.","95号加100迪拉姆。",""],
+    ["Card, please.","刷卡。",""],
+    ["Can you check the tyre pressure?","能查一下胎压吗？",""],
+    ["Can you clean the windscreen?","能擦一下挡风玻璃吗？",""],
+    ["How much is the car wash?","洗车多少钱？",""],
+    ["Inside and outside, please.","内外都洗。",""],
+    ["My car is making a strange noise.","我车有异响。",""],
+    ["The AC is not cooling.","空调不制冷。",""],
+    ["Can you check it?","能检查一下吗？",""],
+    ["How much will it cost?","要多少钱？",""],
+    ["Can you give me a quotation first?","能先给个报价吗？",""],
+    ["Don't do anything before you call me.","没跟我确认前别动。","很实用的防超支句"],
+    ["How long will it take?","要多久？",""],
+    ["Do you have a courtesy car?","有代步车吗？",""],
+    ["I have a flat tyre.","我扎胎了。",""],
+    ["My battery is dead. Can you jump start it?","电瓶没电了，能搭电吗？",""],
+    ["Where can I park?","哪里能停车？",""],
+    ["Is parking free here?","这里停车免费吗？",""],
+    ["Do I need to pay at the machine?","要在机器上缴费吗？",""],
+    ["I got a fine. How do I pay it?","我收到罚单，怎么交？",""]
+  ]
+},
+{
+  id:"govt", title:"政务与证件", en:"Government & Documents", tone:"Amer / Tasheel / 签证中心",
+  intro:"办证窗口讲求准确。带齐材料 + 说清要办什么，用 I want to apply for... 开头。",
+  groups:[
+    {name:"证件类型 Documents", items:[
+      ["visa","签证"],["residence visa","居留签"],["visit visa","访问签"],["renewal","续签"],
+      ["cancellation","注销"],["Emirates ID","阿联酋身份证"],["passport","护照"],
+      ["work permit","工作许可"],["labour card","劳动卡"],["medical test","入境体检"],
+      ["driving licence","驾照"],["licence conversion","驾照转换"],["attestation","认证"],
+      ["translation","翻译件"],["notary","公证"],["tenancy contract","租房合同"],
+      ["salary certificate","收入证明"],["NOC","无异议证明"],["insurance card","保险卡"]
+    ]},
+    {name:"办事流程 Process", items:[
+      ["apply","申请"],["application","申请表"],["submit","提交"],["appointment","预约"],
+      ["token / queue number","叫号"],["counter","窗口"],["typing centre","打字中心（当地特色）"],
+      ["fee","费用"],["urgent / express","加急"],["normal","普通"],["processing time","办理时长"],
+      ["status","进度"],["approved","已通过"],["rejected","被拒"],["pending","处理中"],
+      ["collect","领取"],["courier / delivery","邮寄"],["copy","复印件"],["original","原件"],
+      ["photo","照片"],["biometrics / fingerprints","指纹采集"],["stamp","盖章"],["valid until","有效期至"]
+    ]}
+  ],
+  phrases:[
+    ["I want to apply for a residence visa.","我要办居留签。",""],
+    ["I want to renew my Emirates ID.","我要续办身份证。",""],
+    ["What documents do I need?","需要哪些材料？",""],
+    ["Do I need the original or a copy?","要原件还是复印件？",""],
+    ["Do I need an appointment?","需要预约吗？",""],
+    ["Where do I take a number?","在哪取号？",""],
+    ["Which counter should I go to?","去哪个窗口？",""],
+    ["Is this the right form?","这个表填对了吗？",""],
+    ["Can you help me fill this in?","能帮我填一下吗？",""],
+    ["How much is the fee?","费用多少？",""],
+    ["Is there an express option?","有加急吗？",""],
+    ["How long does it take?","多久能办好？",""],
+    ["How can I check the status?","怎么查进度？",""],
+    ["When can I collect it?","什么时候来取？",""],
+    ["Can you deliver it to my address?","能寄到我地址吗？",""],
+    ["My application was rejected. What's the reason?","我的申请被拒了，什么原因？",""],
+    ["What should I do next?","下一步该做什么？",""],
+    ["Can I do this online?","能网上办吗？",""],
+    ["Is this office open on Saturday?","周六开门吗？",""],
+    ["Sorry, can you repeat that slowly?","抱歉，能慢点再说一遍吗？","听不懂时最有用的一句"]
+  ]
+},
+{
+  id:"office", title:"办公室与同事", en:"Office & Colleagues", tone:"日常寒暄 + 采购工作用语",
+  intro:"和多国同事共事，寒暄要短、请求要直接。工作场景补充了采购常用词。",
+  groups:[
+    {name:"寒暄 Small Talk", items:[
+      ["How's it going?","最近怎么样？"],["How was your weekend?","周末过得怎么样？"],
+      ["Long day?","今天挺累吧？"],["Almost done?","快弄完了？"],["Any plans tonight?","今晚有安排吗？"],
+      ["Take care.","保重。"],["See you tomorrow.","明天见。"],["Have a good one.","过得愉快。"],
+      ["Same here.","我也是。"],["No worries.","没事。"],["Fair enough.","有道理。"],
+      ["Makes sense.","说得通。"],["Good point.","说得好。"],["Let me check.","我查一下。"],
+      ["I'll get back to you.","我回头答复你。"]
+    ]},
+    {name:"协作请求 Requests", items:[
+      ["Can you help me with...","能帮我…吗"],["Do you have a minute?","有空聊一下吗"],
+      ["Can we talk later?","能晚点聊吗"],["I need this by tomorrow.","我明天要"],
+      ["Is this urgent?","这个急吗"],["Let's align on this.","咱们对一下"],
+      ["I'll follow up.","我来跟进"],["Any update?","有进展吗"],
+      ["Just a reminder","提醒一下"],["Sorry for the delay.","抱歉迟了"],
+      ["Could you send it again?","能再发一次吗"],["Copy me in.","抄送我"],
+      ["Loop him in.","把他也拉进来"],["Let's keep it simple.","咱们简单点"]
+    ]},
+    {name:"采购工作词 Sourcing", items:[
+      ["supplier / vendor","供应商"],["quotation","报价"],["unit price","单价"],["MOQ","最小起订量"],
+      ["lead time","交期"],["sample","样品"],["counter sample","确认样"],["SKU","单品"],
+      ["assortment","品类组合"],["landed cost","到岸成本"],["FOB / CIF","离岸价 / 到岸价"],
+      ["margin","毛利"],["markdown","降价"],["sell-through","售罄率"],["stock turn","周转"],
+      ["replenishment","补货"],["purchase order / PO","采购订单"],["shipment","出货"],
+      ["lead SKU","主推款"],["licensing","授权"],["royalty","版税"],["compliance","合规"],
+      ["packaging","包装"],["barcode","条码"],["inspection","验货"],["defect","次品"]
+    ]}
+  ],
+  phrases:[
+    ["Morning! How's everything?","早！都还好吧？",""],
+    ["Do you have a minute?","有两分钟吗？",""],
+    ["Sorry, I didn't catch that.","抱歉没听清。","比 pardon 更自然"],
+    ["Can you say that again, slowly?","能慢点再说一遍吗？",""],
+    ["Let me make sure I understand.","我确认一下我理解对了。",""],
+    ["So you mean we should wait, right?","所以你的意思是我们要等，对吧？","确认句，避免误会"],
+    ["Let me check and come back to you.","我查一下再答复你。",""],
+    ["Can you send me the file?","能把文件发我吗？",""],
+    ["Please copy me on the email.","邮件抄送我。",""],
+    ["What's the deadline?","截止时间是什么时候？",""],
+    ["Can we push it to Thursday?","能推到周四吗？",""],
+    ["I need the quotation by Monday.","我周一之前要报价。",""],
+    ["What's the MOQ and the lead time?","起订量和交期是多少？",""],
+    ["Can you improve the price?","价格能再谈吗？",""],
+    ["Can you send a sample first?","能先寄样品吗？",""],
+    ["This one is selling well.","这款卖得不错。",""],
+    ["This one is slow moving.","这款动销慢。",""],
+    ["We need to reorder.","我们需要补单。",""],
+    ["Let's discuss it in the meeting.","会上讨论吧。",""],
+    ["Thanks for the quick reply.","感谢快速回复。",""]
+  ]
+}
+]);
+
+</script>
+<script>
+"use strict";
+var MEM={};
+var ST={get:function(k,d){try{var v=localStorage.getItem("pf_"+k);return v?JSON.parse(v):(MEM[k]!==undefined?MEM[k]:d);}catch(e){return MEM[k]!==undefined?MEM[k]:d;}},
+       set:function(k,v){MEM[k]=v;try{localStorage.setItem("pf_"+k,JSON.stringify(v));}catch(e){}}};
+var EPOCH=new Date(2026,0,1);
+function today(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());}
+function dayIndex(){return Math.floor((today()-EPOCH)/86400000);}
+function ymd(d){d=d||today();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function cnDate(){var d=today();return (d.getMonth()+1)+" 月 "+d.getDate()+" 日 · 周"+"日一二三四五六"[d.getDay()];}
+var SCENES=window.EN_SCENES||[],GEOIDX=[],RETAIL=null;
+function todayScene(){return SCENES[dayIndex()%SCENES.length];}
+function todayCountry(){return GEOIDX.length?GEOIDX[(dayIndex()*7+3)%GEOIDX.length]:null;}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function attr(s){return esc(s).replace(/'/g,"&#39;");}
+function sq(s){return String(s).replace(/\\/g,"").replace(/'/g,"\\'");}
+var IC_SPK='<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+var IC_STAR='<svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.7 6.3.9-4.5 4.4 1 6.3L12 17.4 6.5 20.3l1-6.3L3 9.6l6.3-.9z"/></svg>';
+var cur="today";
+function go(v){cur=v;document.querySelectorAll(".view").forEach(function(s){s.classList.toggle("on",s.id==="v-"+v);});
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===v||(v==="study"&&b.dataset.v==="en"));});
+  window.scrollTo(0,0);if(v==="geo")setTimeout(sizeMap,30);}
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){go(b.dataset.v);};});
+/* ---- speech ---- */
+var VOICE=null;
+function pickVoice(){try{var vs=speechSynthesis.getVoices()||[];
+  VOICE=vs.find(function(v){return /en-GB/i.test(v.lang)})||vs.find(function(v){return /en-US/i.test(v.lang)})||vs.find(function(v){return /^en/i.test(v.lang)})||null;}catch(e){}}
+if(window.speechSynthesis){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(t){if(!window.speechSynthesis)return;try{speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(String(t).replace(/\s*\/\s*/g," or "));u.lang="en-GB";u.rate=.88;if(VOICE)u.voice=VOICE;speechSynthesis.speak(u);}catch(e){}}
+/* ---- SRS ---- */
+var STEPS=[0,1,2,4,7,15,30,60];
+function vocab(){return ST.get("vocab",{});}
+function saveVocab(v){ST.set("vocab",v);}
+function K(en){return String(en).toLowerCase().trim();}
+function itemsOf(s){var a=[];s.groups.forEach(function(g){g.items.forEach(function(i){a.push({en:i[0],zh:i[1],nt:"",k:"词"});});});
+  s.phrases.forEach(function(p){a.push({en:p[0],zh:p[1],nt:p[2]||"",k:"句"});});return a;}
+function rec(en){return vocab()[K(en)];}
+function setRec(o){var v=vocab();v[K(o.en)]=o;saveVocab(v);}
+function gradeCard(it,g,sid){
+  var v=vocab(),k=K(it.en),o=v[k]||{en:it.en,zh:it.zh,s:sid,lv:0,seen:0,miss:0};
+  o.zh=it.zh;o.s=sid||o.s;o.seen=(o.seen||0)+1;o.last=ymd();
+  if(g==="yes")o.lv=Math.min((o.lv||0)+2,STEPS.length-1);
+  else if(g==="mid"){o.lv=Math.max(1,Math.min((o.lv||0)+1,3));o.miss=(o.miss||0)+1;}
+  else{o.lv=0;o.miss=(o.miss||0)+2;}
+  var d=new Date();d.setDate(d.getDate()+STEPS[o.lv]);o.due=ymd(d);
+  v[k]=o;saveVocab(v);
+}
+function dueList(){var v=vocab(),t=ymd(),a=[];for(var k in v)if(!v[k].due||v[k].due<=t)a.push(v[k]);return a;}
+function weakList(){var v=vocab(),a=[];for(var k in v)if((v[k].miss||0)>=2||(v[k].lv||0)<=1)a.push(v[k]);
+  return a.sort(function(x,y){return (y.miss||0)-(x.miss||0);});}
+function knownCount(){var v=vocab(),n=0;for(var k in v)if((v[k].lv||0)>=4)n++;return n;}
+function refreshStats(){
+  var log=ST.get("log",{}),t=ymd();
+  var e=document.getElementById("stNew");if(e)e.textContent=(log[t]&&log[t].n)||0;
+  e=document.getElementById("stDue");if(e)e.textContent=dueList().length;
+  e=document.getElementById("stKnown");if(e)e.textContent=knownCount();
+  e=document.getElementById("stWeak");if(e)e.textContent=weakList().length;
+}
+function bumpLog(n){var log=ST.get("log",{}),t=ymd();log[t]=log[t]||{n:0};log[t].n+=n;ST.set("log",log);}
+/* ---- TODAY ---- */
+function renderToday(){
+  document.getElementById("hdDate").textContent=cnDate();
+  document.getElementById("hdBadge").textContent="第 "+(dayIndex()+1)+" 天";
+  var s=todayScene(),c=todayCountry();
+  document.getElementById("tdTitle").textContent=s.title+(c?" · "+c.zh:"");
+  document.getElementById("tdSub").textContent="学一个高频英语单元，认识一个国家。";
+  var all=itemsOf(s),pos=posOf(s.id);
+  document.getElementById("tdScene").innerHTML=
+   '<div class="card"><div class="eyebrow">Unit '+((dayIndex()%SCENES.length)+1)+' / '+SCENES.length+'</div>'+
+   '<h3 style="font-size:19px">'+esc(s.title)+' <span class="muted" style="font-weight:400;font-size:14px">'+esc(s.en)+'</span></h3>'+
+   '<p class="small muted" style="margin:8px 0 12px">'+esc(s.intro)+'</p>'+
+   '<div class="row" style="margin-bottom:13px"><span class="chip ac">'+all.length+' 张卡片</span><span class="chip">'+s.groups.length+' 个分类</span>'+
+   (pos?'<span class="chip ok">已学到第 '+pos+' 张</span>':'')+'</div>'+
+   '<div class="row"><button class="btn pri" style="flex:1" onclick="startStudy(\''+attr(s.id)+'\',\'new\')">'+(pos?'继续学习':'进入学习模式')+'</button>'+
+   '<button class="btn" style="flex:1" onclick="openScene(\''+attr(s.id)+'\')">查看列表</button></div>'+
+   '<div class="row" style="margin-top:9px"><button class="btn full" onclick="startReview()">复习 '+dueList().length+' 张到期卡片</button></div></div>';
+  if(c){document.getElementById("tdGeo").innerHTML=
+   '<div style="display:flex;gap:14px;align-items:center"><div class="cflag">'+c.flag+'</div>'+
+   '<div><h3 style="font-size:19px">'+esc(c.zh)+'</h3><div class="tiny">'+esc(c.en)+' · '+esc(c.cont)+' · '+esc(c.cap)+'</div></div></div>';
+   document.getElementById("tdGeo").onclick=function(){showCountry(c.id);};}
+  renderTodayRetail();refreshStats();
+}
+function renderTodayRetail(){
+  var el=document.getElementById("tdRetail"),hd=document.getElementById("tdRetailHd");
+  if(!RETAIL||!(RETAIL.sections||[]).length){
+    el.innerHTML='<div class="card"><p class="small muted" style="margin:0">零售板块需要密码。</p>'+
+      '<div class="row" style="margin-top:10px"><button class="btn full" onclick="go(\'retail\')">前往解锁</button></div></div>';return;}
+  var picks=[];RETAIL.sections.forEach(function(sec){(sec.items||[]).forEach(function(i){picks.push([sec.title,i]);});});
+  var st=(dayIndex()*2)%Math.max(picks.length,1);
+  el.innerHTML=[picks[st],picks[(st+1)%picks.length]].filter(Boolean).map(function(p){
+    return '<div class="card" style="margin-bottom:10px"><div class="eyebrow">'+esc(p[0])+'</div>'+
+      '<div style="font-weight:640;font-size:15px;margin-bottom:6px">'+esc(p[1].t)+'</div>'+
+      '<div class="small muted">'+esc(String(p[1].body).slice(0,110))+'…</div></div>';
+  }).join("")+'<button class="btn full" onclick="go(\'retail\')">查看全部</button>';
+}
+/* ---- ENGLISH LIST ---- */
+var curScene=null;
+function renderPills(){
+  document.getElementById("enPills").innerHTML=SCENES.map(function(s){
+    return '<button class="pill'+(s.id===curScene?" on":"")+'" data-s="'+attr(s.id)+'">'+esc(s.title)+'</button>';}).join("");
+  document.querySelectorAll("#enPills .pill").forEach(function(b){b.onclick=function(){openScene(b.dataset.s);};});
+}
+function openScene(id){
+  curScene=id;go("en");renderPills();
+  var s=SCENES.filter(function(x){return x.id===id;})[0];if(!s)return;
+  var p=document.querySelector('#enPills .pill.on');if(p&&p.scrollIntoView)p.scrollIntoView({inline:"center",block:"nearest"});
+  var h='<div class="card" style="background:linear-gradient(150deg,#fff6ec,#fff 70%);border-color:#f2e2d0">'+
+   '<h2 style="font-size:21px">'+esc(s.title)+'</h2><div class="tiny" style="margin:4px 0 10px">'+esc(s.en)+' · '+esc(s.tone)+'</div>'+
+   '<p class="small muted" style="margin:0 0 13px">'+esc(s.intro)+'</p>'+
+   '<button class="btn pri full" onclick="startStudy(\''+attr(s.id)+'\',\'new\')">进入学习模式</button></div>';
+  h+='<div class="sec-t">高频词表</div>';
+  s.groups.forEach(function(g,gi){
+    h+='<details class="grp"'+(gi===0?" open":"")+'><summary>'+esc(g.name)+'<span class="n">'+g.items.length+'</span></summary><div class="words">';
+    g.items.forEach(function(it){
+      h+='<div class="w"><div class="sp"><div class="en">'+esc(it[0])+'</div><div class="zh">'+esc(it[1])+'</div></div>'+
+        '<button class="ib" onclick="say(\''+sq(it[0])+'\')">'+IC_SPK+'</button>'+
+        '<button class="ib star'+(rec(it[0])?" on":"")+'" data-en="'+attr(it[0])+'" data-zh="'+attr(it[1])+'">'+IC_STAR+'</button></div>';});
+    h+='</div></details>';});
+  h+='<div class="sec-t">常用句</div><div class="card" style="padding:0">';
+  s.phrases.forEach(function(p2){
+    h+='<div class="ph"><div class="hd2"><div class="sp" style="flex:1"><div class="en">'+esc(p2[0])+'</div><div class="zh">'+esc(p2[1])+'</div>'+
+      (p2[2]?'<div class="nt">'+esc(p2[2])+'</div>':'')+'</div>'+
+      '<button class="ib" onclick="say(\''+sq(p2[0])+'\')">'+IC_SPK+'</button>'+
+      '<button class="ib star'+(rec(p2[0])?" on":"")+'" data-en="'+attr(p2[0])+'" data-zh="'+attr(p2[1])+'">'+IC_STAR+'</button></div></div>';});
+  h+='</div><div style="height:22px"></div>';
+  document.getElementById("enBody").innerHTML=h;
+  document.querySelectorAll("#enBody .ib.star").forEach(function(b){
+    b.onclick=function(){var v=vocab(),k=K(b.dataset.en);
+      if(v[k]){delete v[k];saveVocab(v);b.classList.remove("on");}
+      else{v[k]={en:b.dataset.en,zh:b.dataset.zh,s:id,lv:0,seen:0,miss:0,due:ymd()};saveVocab(v);b.classList.add("on");}
+      refreshStats();};});
+}
+/* ---- STUDY MODE ---- */
+var S={q:[],i:0,shown:false,res:{yes:0,mid:0,no:0},mode:"new",sid:null,wrong:[]};
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var BATCH=20;
+function posOf(sid){return (ST.get("pos",{})[sid])||0;}
+function setPos(sid,v){var p=ST.get("pos",{});p[sid]=v;ST.set("pos",p);}
+function startStudy(sid,mode,restart){
+  var s=SCENES.filter(function(x){return x.id===sid;})[0];if(!s)return;
+  var all=itemsOf(s),st=restart?0:posOf(sid);
+  if(st>=all.length)st=0;
+  if(restart)setPos(sid,0);
+  S={q:all.slice(st,st+BATCH),i:0,shown:false,res:{yes:0,mid:0,no:0},mode:mode||"new",
+     sid:sid,wrong:[],start:st,total:all.length};
+  go("study");drawCard();
+}
+function startReview(){
+  var due=dueList();
+  if(!due.length){var v=vocab(),all=[];for(var k in v)all.push(v[k]);
+    if(!all.length){alert("还没有学习记录，先进入今天的学习单元。");return;}
+    due=shuffle(all).slice(0,20);}
+  S={q:shuffle(due).slice(0,20).map(function(o){return {en:o.en,zh:o.zh,nt:"",k:"复习"};}),
+     i:0,shown:false,res:{yes:0,mid:0,no:0},mode:"review",sid:null,wrong:[]};
+  go("study");drawCard();
+}
+function drawCard(){
+  var b=document.getElementById("studyBody");
+  if(S.i>=S.q.length)return studySummary();
+  var it=S.q[S.i],pct=S.i/S.q.length*100;
+  b.innerHTML='<div class="prog"><i style="width:'+pct+'%"></i></div>'+
+   '<div class="tiny" style="display:flex;justify-content:space-between;margin-bottom:14px"><span>'+(S.i+1)+' / '+S.q.length+
+   (S.total?'　·　本单元 '+(S.start+S.i+1)+' / '+S.total:'')+'</span>'+
+   '<span>认识 '+S.res.yes+' · 模糊 '+S.res.mid+' · 不认识 '+S.res.no+'</span></div>'+
+   '<div class="sc" id="scard"><div class="kind">'+esc(it.k)+(S.mode==="review"?" · 复习":"")+'</div>'+
+   '<div class="front'+(it.en.length>26?" long":"")+'">'+esc(it.en)+'</div>'+
+   (S.shown?'<div class="back"><div class="zh">'+esc(it.zh)+'</div>'+(it.nt?'<div class="nt">'+esc(it.nt)+'</div>':'')+'</div>':'')+'</div>'+
+   '<div class="row" style="margin-bottom:12px"><button class="btn" style="flex:1" onclick="say(\''+sq(it.en)+'\')">'+IC_SPK+' 发音</button>'+
+   (S.shown?'':'<button class="btn pri" style="flex:2" onclick="reveal()">显示释义</button>')+'</div>'+
+   (S.shown?'<div class="grade"><button class="no" onclick="grade(\'no\')">不认识</button>'+
+     '<button class="mid" onclick="grade(\'mid\')">模糊</button>'+
+     '<button class="yes" onclick="grade(\'yes\')">认识</button></div>':'')+
+   '<div class="row" style="margin-top:14px"><button class="btn full" onclick="quitStudy()">退出</button></div>';
+  if(!S.shown)document.getElementById("scard").onclick=reveal;
+  say(it.en);
+}
+function reveal(){S.shown=true;drawCard();}
+function grade(g){
+  var it=S.q[S.i];S.res[g]++;gradeCard(it,g,S.sid);
+  if(g!=="yes")S.wrong.push(it);
+  S.i++;S.shown=false;drawCard();
+}
+function quitStudy(){bumpLog(S.i);if(S.sid)setPos(S.sid,S.start+S.i);go(S.mode==="review"?"today":"en");renderToday();}
+function studySummary(){
+  bumpLog(S.q.length);
+  var nxt=S.start+S.q.length;var fin=S.sid&&nxt>=S.total;
+  if(S.sid)setPos(S.sid,fin?0:nxt);
+  var t=S.q.length,r=S.res,pct=Math.round(r.yes/t*100);
+  var weak=weakList().slice(0,12);
+  document.getElementById("studyBody").innerHTML=
+   '<div class="card" style="text-align:center;background:linear-gradient(150deg,#fff6ec,#fff 70%);border-color:#f2e2d0">'+
+   '<div class="eyebrow">单元完成</div><div style="font-size:42px;font-weight:750;color:var(--ac2);margin:6px 0">'+pct+'%</div>'+
+   '<div class="muted">'+t+' 张卡片 · 认识 '+r.yes+' · 模糊 '+r.mid+' · 不认识 '+r.no+'</div>'+
+   '<div class="bar"><i style="width:'+(r.yes/t*100)+'%;background:var(--ok)"></i>'+
+   '<i style="width:'+(r.mid/t*100)+'%;background:#e0b64a"></i><i style="width:'+(r.no/t*100)+'%;background:var(--warn)"></i></div>'+
+   '<p class="small muted" style="margin:12px 0 0;text-align:left">'+
+   (r.no+r.mid===0?'全部认识。这一单元会在 30 天后再出现一次。':
+    '标记为「不认识」的会在明天再出现，「模糊」的两天后。认识的按 4·7·15·30 天逐步拉长间隔。')+'</p></div>'+
+   (S.wrong.length?'<div class="sec-t">这轮需要重点记的</div><div class="card" style="padding:0">'+
+     S.wrong.map(function(w){return '<div class="ph"><div class="hd2"><div style="flex:1"><div class="en">'+esc(w.en)+'</div>'+
+       '<div class="zh">'+esc(w.zh)+'</div></div><button class="ib" onclick="say(\''+sq(w.en)+'\')">'+IC_SPK+'</button></div></div>';}).join("")+'</div>':'')+
+   (weak.length?'<div class="sec-t">长期薄弱（累计答错最多）</div><div class="card" style="padding:0">'+
+     weak.map(function(w){return '<div class="ph"><div class="hd2"><div style="flex:1"><div class="en">'+esc(w.en)+'</div>'+
+       '<div class="zh">'+esc(w.zh)+'</div></div><span class="chip" style="align-self:center">错 '+(w.miss||0)+' 次</span></div></div>';}).join("")+'</div>':'')+
+   (S.sid&&!fin?'<div class="row" style="margin:16px 0 9px"><button class="btn pri full" onclick="startStudy(\''+attr(S.sid)+'\',\'new\')">继续下一组（还剩 '+(S.total-nxt)+' 张）</button></div>':
+     (S.sid?'<div class="card" style="border-color:#bfe6d6;background:var(--okbg);margin-top:14px"><p class="small" style="margin:0;color:var(--ok)">这个单元 '+S.total+' 张卡片全部过完了。下次进入会从头再来一轮。</p></div>':''))+
+   '<div class="row" style="margin:14px 0 9px"><button class="btn'+(S.sid&&!fin?'':' pri')+' full" onclick="startQuiz()">用测验巩固</button></div>'+
+   '<div class="row" style="margin-bottom:24px"><button class="btn full" onclick="go(\'today\');renderToday()">回到今日</button></div>';
+  renderToday();
+}
+/* ---- QUIZ (multi-format) ---- */
+var Q={pool:[],i:0,ok:0,items:[]};
+function startQuiz(){
+  var src=S.wrong.length?S.wrong:dueList();
+  if(!src.length){var v=vocab();for(var k in v)src.push(v[k]);}
+  if(!src.length){alert("先学一个单元再来测验。");return;}
+  var all=[];SCENES.forEach(function(s){itemsOf(s).forEach(function(i){all.push(i);});});
+  Q={pool:shuffle(src).slice(0,10),i:0,ok:0,items:all};
+  go("study");nextQ();
+}
+function nextQ(){
+  var b=document.getElementById("studyBody");
+  if(Q.i>=Q.pool.length){
+    var pct=Math.round(Q.ok/Q.pool.length*100);
+    b.innerHTML='<div class="card" style="text-align:center"><div class="eyebrow">测验完成</div>'+
+     '<div style="font-size:42px;font-weight:750;color:var(--ac2);margin:6px 0">'+pct+'%</div>'+
+     '<div class="muted">答对 '+Q.ok+' / '+Q.pool.length+'</div></div>'+
+     '<div class="row"><button class="btn full" onclick="startQuiz()">再来一轮</button></div>'+
+     '<div class="row" style="margin-top:9px"><button class="btn full" onclick="go(\'today\');renderToday()">回到今日</button></div>';
+    renderToday();return;}
+  var q=Q.pool[Q.i],mode=Q.i%4;
+  var others=shuffle(Q.items.filter(function(x){return x.zh!==q.zh;})).slice(0,3);
+  var prog='<div class="prog"><i style="width:'+(Q.i/Q.pool.length*100)+'%"></i></div><div class="tiny" style="margin-bottom:14px">第 '+(Q.i+1)+' / '+Q.pool.length+' 题</div>';
+  if(mode===3){ /* spelling */
+    b.innerHTML=prog+'<div class="card" style="text-align:center"><div class="eyebrow">拼出英文</div>'+
+     '<div style="font-size:22px;font-weight:660;margin:10px 0 6px">'+esc(q.zh)+'</div>'+
+     '<div class="tiny">'+esc(q.en.replace(/[A-Za-z]/g,"·").slice(0,40))+'</div></div>'+
+     '<input class="inp" id="spin" autocomplete="off" autocapitalize="off" placeholder="输入英文后回车">'+
+     '<div class="row" style="margin-top:10px"><button class="btn full" id="spgo">提交</button></div>'+
+     '<div class="row" style="margin-top:9px"><button class="btn full" onclick="say(\''+sq(q.en)+'\')">'+IC_SPK+' 听一遍</button></div>';
+    var go2=function(){
+      var val=(document.getElementById("spin").value||"").trim().toLowerCase();
+      var ok=val===q.en.toLowerCase().trim();
+      if(ok)Q.ok++;gradeCard(q,ok?"yes":"no",null);
+      b.insertAdjacentHTML("beforeend",'<div class="card" style="margin-top:12px;border-color:'+(ok?"var(--ok)":"var(--warn)")+'">'+
+        (ok?'<b style="color:var(--ok)">正确</b>':'<b style="color:var(--warn)">正确答案</b>')+'<div style="margin-top:5px;font-weight:620">'+esc(q.en)+'</div></div>');
+      say(q.en);setTimeout(function(){Q.i++;nextQ();},ok?900:1900);};
+    document.getElementById("spgo").onclick=go2;
+    document.getElementById("spin").onkeydown=function(e){if(e.key==="Enter")go2();};
+    setTimeout(function(){var el=document.getElementById("spin");if(el)el.focus();},80);
+    return;}
+  var enToZh=mode===0,listen=mode===2;
+  var opts=shuffle([q].concat(others));
+  b.innerHTML=prog+'<div class="card" style="text-align:center"><div class="eyebrow">'+
+    (listen?"听音选义":enToZh?"这个是什么意思":"用英语怎么说")+'</div>'+
+    '<div style="font-size:'+((listen?0:(enToZh?q.en:q.zh)).length>26?"20":"25")+'px;font-weight:700;margin:12px 0">'+
+      (listen?'🔊':esc(enToZh?q.en:q.zh))+'</div>'+
+    ((listen||enToZh)?'<button class="btn" onclick="say(\''+sq(q.en)+'\')">'+IC_SPK+' 播放</button>':'')+'</div>'+
+    '<div id="opts">'+opts.map(function(o){
+      return '<button class="opt" data-ok="'+(o.zh===q.zh?1:0)+'">'+esc((listen||enToZh)?o.zh:o.en)+'</button>';}).join("")+'</div>';
+  if(listen)setTimeout(function(){say(q.en);},250);
+  document.querySelectorAll("#opts .opt").forEach(function(bt){
+    bt.onclick=function(){
+      if(bt.dataset.done)return;
+      document.querySelectorAll("#opts .opt").forEach(function(x){x.dataset.done=1;if(x.dataset.ok==="1")x.classList.add("right");});
+      var ok=bt.dataset.ok==="1";if(!ok)bt.classList.add("wrong");else Q.ok++;
+      gradeCard(q,ok?"yes":"no",null);say(q.en);
+      setTimeout(function(){Q.i++;nextQ();},ok?800:1600);};});
+}
+/* ---- MAP ---- */
+var M={feat:null,map:{},z:1,ox:0,oy:0,drag:false,px:0,py:0,moved:0,pinch:0,W:0,H:0,hover:null};
+var cv=document.getElementById("map"),cx=cv?cv.getContext("2d"):null;
+function sizeMap(){
+  if(!cv)return;var w=cv.parentNode.clientWidth||360;var h=Math.round(Math.min(w*0.62,460));
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=w*dpr;cv.height=h*dpr;cv.style.height=h+"px";cx.setTransform(dpr,0,0,dpr,0,0);
+  M.W=w;M.H=h;drawMap();
+}
+function base(){return M.W/360;}
+function pxOf(lon,lat){var b=base()*M.z;return [(lon+180)*b+M.ox,(84-lat)*b*(180/168)+M.oy];}
+function lonlatOf(x,y){var b=base()*M.z;return [(x-M.ox)/b-180,84-(y-M.oy)/(b*(180/168))];}
+function fitMap(){M.z=1;M.ox=0;M.oy=(M.H-base()*180*(168/180))/2;}
+function drawMap(){
+  if(!cx)return;
+  cx.clearRect(0,0,M.W,M.H);
+  cx.fillStyle="#dce7f2";cx.fillRect(0,0,M.W,M.H);
+  if(!M.feat){cx.fillStyle="#9aa8ba";cx.font="13px sans-serif";cx.textAlign="center";
+    cx.fillText("地图数据加载中…",M.W/2,M.H/2);cx.textAlign="left";return;}
+  M.feat.forEach(function(f,fi){
+    var known=M.map[fi];
+    cx.beginPath();
+    f.polys.forEach(function(ring){
+      for(var i=0;i<ring.length;i++){var p=pxOf(ring[i][0],ring[i][1]);
+        if(i===0)cx.moveTo(p[0],p[1]);else cx.lineTo(p[0],p[1]);}
+      cx.closePath();});
+    cx.fillStyle=known?(M.hover===fi?"#f0b070":"#e8d3ba"):"#eef1f4";
+    cx.fill();
+    cx.lineWidth=.6;cx.strokeStyle=known?"#c99a63":"#d7dde4";cx.stroke();
+  });
+}
+function ptIn(ring,x,y){
+  var inside=false;
+  for(var i=0,j=ring.length-1;i<ring.length;j=i++){
+    var xi=ring[i][0],yi=ring[i][1],xj=ring[j][0],yj=ring[j][1];
+    if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))inside=!inside;}
+  return inside;
+}
+function featAt(lon,lat){
+  for(var i=0;i<M.feat.length;i++){
+    var f=M.feat[i];
+    if(lon<f.bb[0]||lon>f.bb[2]||lat<f.bb[1]||lat>f.bb[3])continue;
+    for(var j=0;j<f.polys.length;j++)if(ptIn(f.polys[j],lon,lat))return i;}
+  return -1;
+}
+function evPt(e){var r=cv.getBoundingClientRect();var t=e.touches&&e.touches[0]?e.touches[0]:e;return [t.clientX-r.left,t.clientY-r.top];}
+function zoomAt(f,cxp,cyp){
+  var nz=Math.max(1,Math.min(14,M.z*f));var k=nz/M.z;
+  M.ox=cxp-(cxp-M.ox)*k;M.oy=cyp-(cyp-M.oy)*k;M.z=nz;clampMap();drawMap();
+}
+function zoomBy(f){zoomAt(f,M.W/2,M.H/2);}
+function resetMap(){fitMap();drawMap();}
+function clampMap(){
+  var w=base()*M.z*360,h=base()*M.z*180*(168/180);
+  M.ox=Math.min(0,Math.max(M.W-w,M.ox));
+  if(h<=M.H)M.oy=(M.H-h)/2;else M.oy=Math.min(0,Math.max(M.H-h,M.oy));
+}
+if(cv){
+  cv.addEventListener("mousedown",function(e){M.drag=true;M.moved=0;var p=evPt(e);M.px=p[0];M.py=p[1];});
+  window.addEventListener("mousemove",function(e){
+    if(!M.drag){if(cur!=="geo"||!M.feat)return;
+      var p=evPt(e);if(p[0]<0||p[0]>M.W||p[1]<0||p[1]>M.H)return;
+      var ll=lonlatOf(p[0],p[1]),fi=featAt(ll[0],ll[1]);
+      var tip=document.getElementById("mtip");
+      if(fi>=0&&M.map[fi]){M.hover=fi;tip.textContent=M.map[fi].zh;tip.classList.add("on");}
+      else{M.hover=null;tip.classList.remove("on");}
+      drawMap();return;}
+    var p2=evPt(e);M.ox+=p2[0]-M.px;M.oy+=p2[1]-M.py;M.moved+=Math.abs(p2[0]-M.px)+Math.abs(p2[1]-M.py);
+    M.px=p2[0];M.py=p2[1];clampMap();drawMap();});
+  window.addEventListener("mouseup",function(e){
+    if(M.drag&&M.moved<5)tapMap(e);M.drag=false;});
+  cv.addEventListener("wheel",function(e){e.preventDefault();var p=evPt(e);zoomAt(e.deltaY<0?1.18:1/1.18,p[0],p[1]);},{passive:false});
+  cv.addEventListener("touchstart",function(e){
+    if(e.touches.length===2){M.pinch=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);M.drag=false;return;}
+    M.drag=true;M.moved=0;var p=evPt(e);M.px=p[0];M.py=p[1];},{passive:true});
+  cv.addEventListener("touchmove",function(e){
+    if(e.touches.length===2){e.preventDefault();
+      var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      if(M.pinch){var r=cv.getBoundingClientRect();
+        zoomAt(d/M.pinch,(e.touches[0].clientX+e.touches[1].clientX)/2-r.left,(e.touches[0].clientY+e.touches[1].clientY)/2-r.top);}
+      M.pinch=d;return;}
+    if(!M.drag)return;e.preventDefault();var p=evPt(e);
+    M.ox+=p[0]-M.px;M.oy+=p[1]-M.py;M.moved+=Math.abs(p[0]-M.px)+Math.abs(p[1]-M.py);
+    M.px=p[0];M.py=p[1];clampMap();drawMap();},{passive:false});
+  cv.addEventListener("touchend",function(e){
+    if(M.drag&&M.moved<7&&e.changedTouches&&e.changedTouches[0])tapMap({clientX:e.changedTouches[0].clientX,clientY:e.changedTouches[0].clientY});
+    M.drag=false;M.pinch=0;});
+}
+function tapMap(e){
+  if(!M.feat)return;var p=evPt(e);var ll=lonlatOf(p[0],p[1]);var fi=featAt(ll[0],ll[1]);
+  if(fi>=0&&M.map[fi])showCountry(M.map[fi].id);
+  else if(fi>=0){var tip=document.getElementById("mtip");tip.textContent=(M.feat[fi].name||"这个国家")+" · 暂无资料";tip.classList.add("on");
+    setTimeout(function(){tip.classList.remove("on");},1800);}
+}
+function decodeTopo(topo,objName){
+  var o=topo.objects[objName],tr=topo.transform,arcs=topo.arcs;
+  var cache=arcs.map(function(a){var x=0,y=0,out=[];
+    for(var i=0;i<a.length;i++){x+=a[i][0];y+=a[i][1];
+      out.push([x*tr.scale[0]+tr.translate[0],y*tr.scale[1]+tr.translate[1]]);}return out;});
+  function ring(idx){var out=[];idx.forEach(function(a){var rev=a<0,ar=cache[rev?~a:a].slice();
+    if(rev)ar.reverse();if(out.length)ar.shift();out=out.concat(ar);});return out;}
+  var feats=[];
+  (o.geometries||[]).forEach(function(g){
+    var polys=[];
+    if(g.type==="Polygon")g.arcs.forEach(function(r){polys.push(ring(r));});
+    else if(g.type==="MultiPolygon")g.arcs.forEach(function(pp){pp.forEach(function(r){polys.push(ring(r));});});
+    if(!polys.length)return;
+    var bb=[180,90,-180,-90];
+    polys.forEach(function(r){r.forEach(function(pt){
+      if(pt[0]<bb[0])bb[0]=pt[0];if(pt[1]<bb[1])bb[1]=pt[1];
+      if(pt[0]>bb[2])bb[2]=pt[0];if(pt[1]>bb[3])bb[3]=pt[1];});});
+    feats.push({polys:polys,bb:bb,name:(g.properties&&g.properties.name)||"",id:g.id});
+  });
+  return feats;
+}
+function loadMap(){
+  var urls=["https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+            "https://unpkg.com/world-atlas@2/countries-110m.json"];
+  (function nx(i){
+    if(i>=urls.length){drawMap();return;}
+    fetch(urls[i]).then(function(r){return r.ok?r.json():Promise.reject();}).then(function(t){
+      M.feat=decodeTopo(t,"countries");
+      GEOIDX.forEach(function(c){
+        var fi=featAt(c.lon,c.lat);
+        if(fi>=0&&!M.map[fi])M.map[fi]=c;
+      });
+      fitMap();drawMap();
+    }).catch(function(){nx(i+1);});
+  })(0);
+}
+/* ---- COUNTRY ---- */
+var curCont="全部",DETAIL={};
+function renderGeoList(){
+  var cs=["全部"];GEOIDX.forEach(function(c){if(cs.indexOf(c.cont)<0)cs.push(c.cont);});
+  document.getElementById("contPills").innerHTML=cs.map(function(c){
+    return '<button class="pill'+(c===curCont?" on":"")+'" data-c="'+attr(c)+'">'+esc(c)+'</button>';}).join("");
+  document.querySelectorAll("#contPills .pill").forEach(function(b){b.onclick=function(){curCont=b.dataset.c;renderGeoList();};});
+  var list=GEOIDX.filter(function(c){return curCont==="全部"||c.cont===curCont;});
+  document.getElementById("geoGrid").innerHTML='<div class="tiny" style="margin-bottom:8px">共 '+list.length+' 个国家</div><div class="ccards tight">'+
+    list.map(function(c){return '<div class="cc" style="cursor:pointer" data-id="'+attr(c.id)+'"><div class="bd">'+
+      '<div style="font-size:24px;line-height:1.2">'+c.flag+(c.lvl===2?' <span class="chip ok" style="font-size:9px;padding:1px 6px;vertical-align:middle">深度</span>':'')+'</div>'+
+      '<h4 style="margin:6px 0 3px">'+esc(c.zh)+'</h4><p style="font-size:11.5px;color:var(--tx3)">'+esc(c.en)+'</p></div></div>';}).join("")+'</div>';
+  document.querySelectorAll("#geoGrid .cc").forEach(function(el){el.onclick=function(){showCountry(el.dataset.id);};});
+}
+function randomCountry(){showCountry(GEOIDX[Math.floor(Math.random()*GEOIDX.length)].id);}
+function backToMap(){document.getElementById("geoDetail").style.display="none";
+  document.getElementById("geoList").style.display="";window.scrollTo(0,0);setTimeout(sizeMap,30);}
+function wikiImg(el,title){
+  fetch("https://en.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(title))
+   .then(function(r){return r.ok?r.json():Promise.reject();}).then(function(j){
+     var u=(j.thumbnail&&j.thumbnail.source)||(j.originalimage&&j.originalimage.source);
+     if(u){var im=new Image();im.onload=function(){el.innerHTML="";el.appendChild(im);};im.src=u;}}).catch(function(){});
+}
+function miniMap(canvas,cid){
+  var c=GEOIDX.filter(function(x){return x.id===cid;})[0];
+  if(!M.feat||!canvas||!c)return;
+  var fi=-1;for(var k in M.map)if(M.map[k].id===cid){fi=+k;break;}
+  if(fi<0)fi=featAt(c.lon,c.lat);
+  if(fi<0)return;
+  var f=M.feat[fi],ctx2=canvas.getContext("2d");
+  var w=canvas.parentNode.clientWidth,h=190,dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width="100%";canvas.style.height=h+"px";ctx2.setTransform(dpr,0,0,dpr,0,0);
+  var bb=f.bb,pad=.12;
+  var dw=(bb[2]-bb[0])||1,dh=(bb[3]-bb[1])||1;
+  var sc=Math.min(w/(dw*(1+pad*2)),h/(dh*(1+pad*2)));
+  var cxm=(bb[0]+bb[2])/2,cym=(bb[1]+bb[3])/2;
+  function P(lon,lat){return [w/2+(lon-cxm)*sc,h/2-(lat-cym)*sc];}
+  ctx2.fillStyle="#eef3f8";ctx2.fillRect(0,0,w,h);
+  ctx2.beginPath();
+  f.polys.forEach(function(r){for(var i=0;i<r.length;i++){var p=P(r[i][0],r[i][1]);if(i===0)ctx2.moveTo(p[0],p[1]);else ctx2.lineTo(p[0],p[1]);}ctx2.closePath();});
+  ctx2.fillStyle="#e8d3ba";ctx2.fill();ctx2.lineWidth=1;ctx2.strokeStyle="#c08a4e";ctx2.stroke();
+  var cp=P(c.lon,c.lat);
+  ctx2.beginPath();ctx2.arc(cp[0],cp[1],4,0,7);ctx2.fillStyle="#cf4a2e";ctx2.fill();
+  ctx2.strokeStyle="#fff";ctx2.lineWidth=1.6;ctx2.stroke();
+}
+function showCountry(id){
+  var c=GEOIDX.filter(function(x){return x.id===id;})[0];if(!c)return;
+  go("geo");document.getElementById("geoList").style.display="none";
+  var d=document.getElementById("geoDetail");d.style.display="";
+  d.innerHTML='<button class="back" onclick="backToMap()">← 返回地图</button><div class="spin"></div>';
+  window.scrollTo(0,0);
+  var done=function(det){renderCountry(c,det);};
+  if(DETAIL[id])return done(DETAIL[id]);
+  fetch("data/geo/"+id+".json").then(function(r){return r.ok?r.json():Promise.reject();})
+   .then(function(j){DETAIL[id]=j;done(j);}).catch(function(){DETAIL[id]=null;done(null);});
+}
+function renderCountry(c,det){
+  det=det||{};
+  var h='<button class="back" onclick="backToMap()">← 返回地图</button>'+
+   '<div class="card" style="background:linear-gradient(150deg,#fff6ec,#fff 70%);border-color:#f2e2d0">'+
+   '<div style="display:flex;gap:14px;align-items:center"><div class="cflag">'+c.flag+'</div>'+
+   '<div><h2 style="font-size:23px">'+esc(c.zh)+'</h2><div class="tiny">'+esc(c.en)+' · '+esc(c.cont)+'</div></div></div>'+
+   '<div class="facts">'+
+   '<div class="fact"><b>首都</b><span>'+esc(c.cap)+'</span></div>'+
+   '<div class="fact"><b>人口</b><span>'+esc(c.pop)+'</span></div>'+
+   '<div class="fact"><b>语言</b><span>'+esc(c.lang)+'</span></div>'+
+   '<div class="fact"><b>货币</b><span>'+esc(c.cur)+'</span></div></div></div>'+
+   '<div class="card" style="padding:0;overflow:hidden"><canvas id="cmap"></canvas></div>';
+  if(det.geo)h+='<div class="sec-t">自然地理</div><div class="card"><p style="margin:0" class="muted">'+esc(det.geo)+'</p></div>';
+  if(det.culture)h+='<div class="sec-t">人文特征</div><div class="card"><p style="margin:0" class="muted">'+esc(det.culture)+'</p></div>';
+  if(det.admin&&det.admin.items&&det.admin.items.length){
+    h+='<div class="sec-t">行政区划</div><div class="card"><div class="tiny" style="margin-bottom:9px">'+
+      esc(det.admin.type||"")+(det.admin.note?' · '+esc(det.admin.note):'')+'</div><div class="adm">'+
+      det.admin.items.map(function(a){return '<div><span>'+esc(a[0])+'</span><span>'+esc(a[1])+'</span></div>';}).join("")+'</div></div>';}
+  if(det.timeline&&det.timeline.length){
+    h+='<div class="sec-t">历史进程</div><div class="card"><div class="tl">'+
+      det.timeline.map(function(t){return '<div class="ev"><div class="y">'+esc(t[0])+'</div><div class="x">'+esc(t[1])+'</div></div>';}).join("")+'</div></div>';}
+  if(det.issues&&det.issues.length){
+    h+='<div class="sec-t">主要社会命题</div><div class="card">'+
+      det.issues.map(function(i){return '<div class="iss"><h4>'+esc(i.t)+'</h4><p>'+esc(i.d)+'</p></div>';}).join("")+'</div>';}
+  if(det.recent&&det.recent.length){
+    h+='<div class="sec-t">近期重要事件</div><div class="card">'+
+      det.recent.map(function(i){return '<div class="iss" style="border-color:#c8dcf3"><h4>'+esc(i.t)+'</h4><p>'+esc(i.d)+'</p></div>';}).join("")+'</div>';}
+  if(det.travel&&((det.travel.spots||[]).length||(det.travel.routes||[]).length)){
+    h+='<div class="sec-t">旅行</div>';
+    if((det.travel.routes||[]).length)h+='<div style="margin-bottom:12px">'+det.travel.routes.map(function(r){
+      return '<div class="route"><b>'+esc(r.n)+'</b><p>'+esc(r.d)+'</p></div>';}).join("")+'</div>';
+    if((det.travel.spots||[]).length)h+='<div class="card">'+det.travel.spots.map(function(s){
+      return '<div class="spot"><b>'+esc(s.n)+'</b><p>'+esc(s.d)+'</p></div>';}).join("")+'</div>';}
+  if(det.cards&&det.cards.length){
+    h+='<div class="sec-t">代表事物</div><div class="ccards" id="ccW">'+det.cards.map(function(k,i){
+      return '<div class="cc"><div class="img" id="ci'+i+'"><span class="ph2">'+esc(k.t)+'</span></div><div class="bd">'+
+        '<div class="tp">'+esc(k.t)+'</div><h4>'+esc(k.n)+'</h4><p>'+esc(k.d)+'</p>'+
+        '<div style="margin-top:8px"><a href="https://zh.wikipedia.org/wiki/Special:Search?search='+encodeURIComponent(k.n)+'" target="_blank" rel="noopener" class="tiny">中文维基 ↗</a>'+
+        ' · <a href="https://en.wikipedia.org/wiki/'+encodeURIComponent(k.w)+'" target="_blank" rel="noopener" class="tiny">English ↗</a></div></div></div>';}).join("")+'</div>';}
+  h+='<div class="sec-t">深入了解</div><div class="card"><div class="row">'+
+    '<a class="btn" href="https://zh.wikipedia.org/wiki/'+encodeURIComponent(c.zh)+'" target="_blank" rel="noopener">中文维基百科 ↗</a>'+
+    '<a class="btn" href="https://en.wikipedia.org/wiki/'+encodeURIComponent(c.wiki||c.en)+'" target="_blank" rel="noopener">English Wikipedia ↗</a>'+
+    ((det.videos||[]).map(function(v){return '<a class="btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(v[1])+'" target="_blank" rel="noopener">▶ '+esc(v[0])+'</a>';}).join(""))+
+    '<a class="btn" href="https://www.youtube.com/results?search_query='+encodeURIComponent(c.en+" documentary")+'" target="_blank" rel="noopener">▶ 纪录片</a>'+
+    '</div><div id="wsum" class="small muted" style="margin-top:12px"></div></div>';
+  if(det.fact)h+='<div class="sec-t">冷知识</div><div class="card" style="border-color:#f0dcc4;background:var(--acbg)">'+
+    '<p style="margin:0;color:var(--ac2)">'+esc(det.fact)+'</p></div>';
+  if(!det.timeline||!det.timeline.length)
+    h+='<div class="card" style="border-style:dashed"><p class="small muted" style="margin:0">这个国家的深度内容（历史时间轴、行政区划、社会命题、旅行路线）还在陆续补充，每天的定时任务会自动补齐。上面的维基百科入口可以先用。</p></div>';
+  h+='<div class="row" style="margin:16px 0 26px"><button class="btn full" onclick="randomCountry()">换一个国家</button></div>';
+  document.getElementById("geoDetail").innerHTML=h;
+  (det.cards||[]).forEach(function(k,i){var el=document.getElementById("ci"+i);if(el)wikiImg(el,k.w);});
+  miniMap(document.getElementById("cmap"),c.id);
+  fetch("https://zh.wikipedia.org/api/rest_v1/page/summary/"+encodeURIComponent(c.zh))
+   .then(function(r){return r.ok?r.json():Promise.reject();}).then(function(j){
+     var el=document.getElementById("wsum");if(el&&j.extract)el.textContent=j.extract;}).catch(function(){});
+}
+/* ---- RETAIL (encrypted) ---- */
+function b64d(s){var b=atob(s),a=new Uint8Array(b.length);for(var i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a;}
+function unlock(pw,silent){
+  return fetch("data/retail.enc.json").then(function(r){return r.json();}).then(function(p){
+    var enc=new TextEncoder();
+    return crypto.subtle.importKey("raw",enc.encode(pw),{name:"PBKDF2"},false,["deriveKey"])
+     .then(function(base){return crypto.subtle.deriveKey({name:"PBKDF2",salt:b64d(p.salt),iterations:p.iter||150000,hash:"SHA-256"},
+        base,{name:"AES-GCM",length:256},false,["decrypt"]);})
+     .then(function(key){return crypto.subtle.decrypt({name:"AES-GCM",iv:b64d(p.iv)},key,b64d(p.ct));})
+     .then(function(buf){RETAIL=JSON.parse(new TextDecoder().decode(buf));
+       ST.set("rpw",pw);renderRetail();renderTodayRetail();return true;});
+  }).catch(function(){if(!silent)alert("密码不对，或数据文件还没上传。");
+    ST.set("rpw",null);return false;});
+}
+function renderRetail(){
+  var box=document.getElementById("retailBody");if(!box)return;
+  if(!RETAIL){
+    box.innerHTML='<div class="card" style="text-align:center;padding:30px 18px">'+
+     '<div class="eyebrow">零售动向</div><h2 style="font-size:19px;margin:6px 0 8px">这个板块需要密码</h2>'+
+     '<p class="small muted" style="margin:0 0 16px">里面是玩具 / 毛绒 / 文具的品牌新品、IP 动向、展会与消费趋势，以及给采购的解读。</p>'+
+     '<input class="inp" id="rpw" type="password" placeholder="输入密码" autocomplete="current-password">'+
+     '<div class="row" style="margin-top:11px"><button class="btn pri full" id="rgo">解锁</button></div></div>';
+    var f=function(){unlock(document.getElementById("rpw").value||"");};
+    document.getElementById("rgo").onclick=f;
+    document.getElementById("rpw").onkeydown=function(e){if(e.key==="Enter")f();};
+    return;}
+  var h='<div class="card" style="background:linear-gradient(150deg,#f4f0fb,#fff 70%);border-color:#e6dff5">'+
+   '<div class="eyebrow">零售动向 · 玩具 / 毛绒 / 文具</div><h2 style="font-size:20px">本期更新</h2>'+
+   '<div class="tiny" style="margin-top:6px">数据截至 '+esc(RETAIL.updated||"—")+'</div>'+
+   '<p class="small muted" style="margin:10px 0 0">'+esc(RETAIL.note||"")+'</p></div>';
+  (RETAIL.sections||[]).forEach(function(s){
+    h+='<div class="sec-t">'+esc(s.title)+'</div>';
+    if(s.lead)h+='<div class="tiny" style="margin:-4px 0 12px">'+esc(s.lead)+'</div>';
+    h+='<div class="card">';
+    (s.items||[]).forEach(function(it,ix){
+      h+='<div class="ri"'+(ix===s.items.length-1?' style="margin-bottom:0"':'')+'>'+
+       (it.tag?'<span class="chip ac" style="margin-bottom:7px">'+esc(it.tag)+'</span>':'')+
+       '<h4>'+esc(it.t)+'</h4><p>'+esc(it.body)+'</p>'+
+       (it.take?'<div class="take"><b>解读 · </b>'+esc(it.take)+'</div>':'')+
+       (it.src?'<div class="tiny"><a href="'+attr(it.src.u)+'" target="_blank" rel="noopener">'+esc(it.src.n)+' ↗</a></div>':'')+'</div>';});
+    h+='</div>';});
+  if((RETAIL.archive||[]).length){h+='<div class="sec-t">往期归档</div><div class="card">'+
+    RETAIL.archive.map(function(a){return '<div class="ri"><h4>'+esc(a.t)+'</h4><p>'+esc(a.body)+'</p><div class="tiny">'+esc(a.date||"")+'</div></div>';}).join("")+'</div>';}
+  h+='<div style="height:24px"></div>';box.innerHTML=h;
+}
+/* ---- boot ---- */
+function boot(){
+  renderToday();curScene=todayScene().id;renderPills();openScene(curScene);go("today");
+  sizeMap();window.addEventListener("resize",function(){sizeMap();});
+  fetch("data/geo-index.json").then(function(r){return r.json();}).then(function(j){
+    GEOIDX=j;renderGeoList();renderToday();loadMap();
+  }).catch(function(){document.getElementById("geoGrid").innerHTML='<div class="empty">国家数据没能加载。如果你是直接双击本地文件打开的，请改用网址访问。</div>';});
+  var pw=ST.get("rpw",null);
+  if(pw)unlock(pw,true).then(function(ok){if(!ok)renderRetail();});else renderRetail();
+}
+boot();
+</script>
+</body>
+</html>
